@@ -1,0 +1,10 @@
+body {
+  background-image: url('../static/images/style/croppedpaper.jpg');
+  /* Just in case no image is supported, we default to an ugly olive to convice them to switch browsers: */
+  color:#808000;
+}
+
+#container {
+  width:95%;
+  height:100%;
+}
