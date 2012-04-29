@@ -1,10 +1,22 @@
+@font-face {
+  font-family:treasure;
+  src: url('../static/fonts/Treamd.ttf');
+}
+
 body {
   background-image: url('../static/images/style/croppedpaper.jpg');
   /* Just in case no image is supported, we default to an ugly olive to convice them to switch browsers: */
-  color:#808000;
+  background-color:#808000;
 }
 
 #container {
   width:95%;
   height:100%;
+  margin:auto;
+}
+
+h1 {
+  font-family:treasure;
+  font-size:5em;
+  text-align:center;
 }
