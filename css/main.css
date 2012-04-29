@@ -3,20 +3,40 @@
   src: url('../static/fonts/Treamd.ttf');
 }
 
+@font-face {
+  font-family:tallys;
+  src: url('../static/fonts/Tallys_15.otf');
+}
+
 body {
   background-image: url('../static/images/style/croppedpaper.jpg');
   /* Just in case no image is supported, we default to an ugly olive to convice them to switch browsers: */
   background-color:#808000;
 }
 
-#container {
-  width:95%;
-  height:100%;
-  margin:auto;
+hr {
+  height:1em;
+  border:0;
+  background: url('../static/images/style/hr.png');
 }
 
 h1 {
   font-family:treasure;
   font-size:5em;
+  color: rgb(96,75,53);
   text-align:center;
+}
+
+p {
+  font-family:tallys;
+  font-size:1em; 
+  padding:5px;
+}
+
+#container {
+  width:60%;
+  height:100%;
+  margin:auto;
+  border:5px black dashed;
+  /* background-image: url('../static/images/style/croppedpaper.jpg'); */
 }
