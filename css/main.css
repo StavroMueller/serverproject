@@ -40,3 +40,8 @@ p {
   border:5px black dashed;
   /* background-image: url('../static/images/style/croppedpaper.jpg'); */
 }
+
+#map {
+  width:100%;
+  height:100%;
+}
