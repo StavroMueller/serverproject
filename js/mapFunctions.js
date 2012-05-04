@@ -32,7 +32,6 @@ var mapgame = {
     mapgame.map.esriMap.addLayer(basemap);
   }
 
-
   mapgame.map.locations.init = function () {
     // some placeholder for the init locations function.
     // I'm thinking here will be a list of locations for
