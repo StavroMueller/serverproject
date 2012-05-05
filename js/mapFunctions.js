@@ -53,6 +53,10 @@ var mapgame = {
 
   };
 
+  function drawPointOnMap(location) {
+
+  }
+
   function queryStopPoint(id) {
     //var query = new esri.tasks.QueryTask;
     var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/MapWithPoints/MapServer/0");
@@ -65,7 +69,7 @@ var mapgame = {
       ["FID"];
 
     console.log("before query");
-    var queryResult = queryTask.execute(query, queryCallback));
+    var queryResult = queryTask.execute(query, queryCallback);
 
   }
 

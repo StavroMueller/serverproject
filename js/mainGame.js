@@ -1,4 +1,5 @@
-mapgame.game = { player:{}, mechanics:{}, };
+mapgame.game = { player:{}, mechanics:{}, monsters:[], };
+
 
 (function () {
     function random(number) {
@@ -9,9 +10,22 @@ mapgame.game = { player:{}, mechanics:{}, };
         // init stuff goes here
         // Crafty.init(stuff);
         mapgame.game.player = new mapgame.game.Ship(10,10,100, 1);
+
+        mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,10,3,5));
+        mapgame.game.monsters.push(new mapgame.game.Monster("Something else", 10, 5, 5));
+        mapgame.game.monsters.push(new mapgame.game.Monster("Aaand something else", 10, 5, 5));
+
         message("Successful initialization");
         updateInfoPane();
     };
+
+    function eventHappens() {
+      return random(10) < 7 ? true : false;
+    }
+
+    function combatHappens() {
+      return random(10) < 4 ? true : false;
+    }
 
     function updateInfoPane() {
       dojo.byId("infopane").innerHTML = "HP: " + mapgame.game.player.hp + "<br />" +
@@ -42,6 +56,13 @@ mapgame.game = { player:{}, mechanics:{}, };
       }
 
       updateInfoPane();
+      if (combatHappens()){
+        enterCombat(random(3)); // The random determines the monster in the function
+      }
+      else if (eventHappens()) {
+        enterEvent(random(5));  // The random determines the event in the function
+      }
+
 
       //center the map at the new location using centerat
 
@@ -51,15 +72,30 @@ mapgame.game = { player:{}, mechanics:{}, };
 
     }
 
-    mapgame.game.Ship = function (hp, pp, money, location) {
+    function enterCombat(monster) {
+      /*
+      switch (monster) {
+        case 1: 
+      }
+      */
+    }
+
+    mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit) {
+      this.desc = desc;
+      this.hp = hp
+      this.baseDamage = baseDamage;
+      this.chanceToHit = chanceToHit;
+    }
+
+    mapgame.game.Ship = function (hp, pp, money, baseDamage, chanceToHit, location) {
        this.maxhp = hp;
        this.hp = hp;
-
        // for 'people power'
        this.maxpp = pp;
        this.pp = pp;
-
        this.money = money;
+       this.baseDamage = baseDamage;
+       this.chanceToHit = chanceToHit;
 
        this.location = location; 
 
