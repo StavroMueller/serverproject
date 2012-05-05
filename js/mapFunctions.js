@@ -71,11 +71,22 @@ var mapgame = {
     console.log("before query");
     var queryResult = queryTask.execute(query, queryCallback);
 
+    mapgame.game.stopPoints = [];
+
+
   }
 
   function queryCallback(results) {
 
     console.log(results);
+    _.each(results.features, function (feature) {
+
+      mapgame.game.stopPoints.push({
+        id: feature.attributes.FID, // This is the id of each point - this is in order! 
+        x: feature.geometry.x,
+        y: feature.geometry.y,
+      })
+    })
 
   }
 

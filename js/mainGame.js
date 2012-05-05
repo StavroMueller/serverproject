@@ -99,9 +99,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
        this.location = location; 
 
-       var type = "temp";
-
-       this.pictureUrl = "../static/images/classes" + type + ".png";
+       this.pictureUrl = "../static/images/classes/whatevergoeshere.png";
 
        // Here will go the crew array.
        // TODO: Make this an array of objects to hold images and 
