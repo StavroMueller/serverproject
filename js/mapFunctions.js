@@ -17,13 +17,19 @@ var mapgame = {
 
   mapgame.map.init = function () {
 
-    /*
     var mapOptions = {
-      extent: new esri.geometry.Extent(-17.779189243, 32.151455282, 43.219845918, 3.928062948),
+      extent: new esri.geometry.Extent({
+        xmin:-17.779189243, 
+        ymin: 32.151455282, 
+        xmax: 43.219845918, 
+        ymax: 3.928062948,
+        spatialreference: {wkid:54004}
+        }),
     };
-    */
 
-    mapgame.map.esriMap = new esri.Map("map"/*, mapOptions*/);
+    mapgame.map.esriMap = new esri.Map("map" , {
+      transparent:false,
+    }/*, mapOptions*/);
 
     if (!debug) {
         dojo.connect(mapgame.map.esriMap, "onLoad", function() {
@@ -33,9 +39,13 @@ var mapgame = {
         });
     }
 
+    console.log(mapgame.map.esriMap.getLayer(0));
+
     addDrawToolbar();
 
     addBasemap();
+
+    queryStopPoint(0);
 
     // _.map(layers, function(layer))
 
@@ -45,13 +55,34 @@ var mapgame = {
 
   function queryStopPoint(id) {
     //var query = new esri.tasks.QueryTask;
-    // var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/MainMap/MapServer");
+    var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/MapWithPoints/MapServer/0");
+    var query = new esri.tasks.Query();
+
+    query.returnGeometry = true;
+    query.text = id;
+
+    query.outFields = 
+      ["FID"];
+
+    console.log("before query");
+    var queryResult = queryTask.execute(query, queryCallback));
+
+  }
+
+  function queryCallback(results) {
+
+    console.log(results);
+
   }
 
   function addDrawToolbar() {
 
     mapgame.map.draw = new esri.toolbars.Draw(mapgame.map.esriMap);
 
+  }
+
+  function addToLine() {
+    // This will be the function that creates a line for the person to view later.
   }
 
   function addBasemap() {
