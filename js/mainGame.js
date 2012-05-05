@@ -9,7 +9,21 @@ mapgame.game = { player:{}, mechanics:{}, };
         // init stuff goes here
         // Crafty.init(stuff);
         mapgame.game.player = new mapgame.game.Ship(10,10,1);
+        message("Successful initialization");
     };
+
+    // Clears the message box if no argument there. 
+    function message(message, elementID) {
+      if (!message) {
+        message = '';
+      }
+      if (elementID) {
+        dojo.byId(elementID).innerHTML = message;
+      }
+      else {
+        dojo.byId("messagebox").innerHTML = message;
+      }
+    }
 
     mapgame.game.mechanics.moveForward = function() {
       // Here will go the stuff that happens when the player wants to 
@@ -18,7 +32,6 @@ mapgame.game = { player:{}, mechanics:{}, };
         console.log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
       }
-
 
       // Determine random combat chance
 
@@ -55,20 +68,6 @@ mapgame.game = { player:{}, mechanics:{}, };
 
        };
     };
-
-    function messageBoxChange(message) {
-      if(!message) {
-        // clear the box
-        // innerHTML
-        document.getElemenyByID("messagebox").value = '';
-      }
-      else
-      {
-        // put the message in the box
-        // innerHTML
-        document.getElementByID("messagebox").value = message;
-      }
-    }
 
     // TODO: This could be abstracted down a bit. Also, I feel like it could be done a lot better.
     // This is set up so that if it is called without arguments, it will just

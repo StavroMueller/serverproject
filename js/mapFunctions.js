@@ -35,7 +35,7 @@ var mapgame = {
 
   function addDrawToolbar() {
 
-    mapgame.map.draw = new esri.toolbar.Draw(mapgame.map.esriMap);
+    mapgame.map.draw = new esri.toolbars.Draw(mapgame.map.esriMap);
 
   }
 
