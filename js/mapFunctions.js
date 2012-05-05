@@ -29,6 +29,8 @@ var mapgame = {
 
     addBasemap();
 
+    // _.map(layers, function(layer))
+
     // initialize the geoprocessor here
 
   };
@@ -40,7 +42,7 @@ var mapgame = {
   }
 
   function addBasemap() {
-    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/Madagascar/MapServer";
+    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/MainMap/MapServer";
     var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(basemapUrl);
 
     mapgame.map.esriMap.addLayer(basemap);
