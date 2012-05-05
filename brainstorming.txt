@@ -1,2 +1,9 @@
 Okay, maybe at the end there should be an option at the end to print your map, or export it somehow...
 this would be pretty cool.
+
+Okay, you could also edit the way the map is displayed...you can split the path
+up into points, and then make kind of a face-away mask to show them the real explorer experience...allowing them to move along and see what they've explored.
+
+Okay, so you could have a point that is passed in to a buffer tool that adds the two resulting clipped rasters
+
+you can clip a something based on a buffer mad from that point - the buffer can be determined by a guy in the crow's nest!

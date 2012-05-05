@@ -1,3 +1,6 @@
+// All content (c) Julien Clifford. Do not use without permission.
+
+// Everything in here is pretty abstracted, in case a new API and map server are used.
 // Initialize the main object
 var debug = true;
 var mapgame = { 
@@ -9,6 +12,7 @@ var mapgame = {
 
 (function () {
   dojo.require("esri.map");
+  dojo.require("esri.toolbars.draw");
 
   mapgame.map.init = function () {
     mapgame.map.esriMap = new esri.Map("map");
@@ -21,13 +25,23 @@ var mapgame = {
         });
     }
 
+    addDrawToolbar();
+
     addBasemap();
+
+    // initialize the geoprocessor here
 
   };
 
+  function addDrawToolbar() {
+
+    mapgame.map.draw = new esri.toolbar.Draw(mapgame.map.esriMap);
+
+  }
+
   function addBasemap() {
-    var basemapUrl = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer";
-    var basemap = new esri.layers.ArcGISTiledMapServiceLayer(basemapUrl);
+    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/Madagascar/MapServer";
+    var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(basemapUrl);
 
     mapgame.map.esriMap.addLayer(basemap);
   }

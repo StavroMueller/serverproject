@@ -1,12 +1,32 @@
-mapgame.game = { player:{}, };
+mapgame.game = { player:{}, mechanics:{}, };
 
 (function () {
+    function random(number) {
+      return Math.floor((Math.random()*number) + 1);
+    }
+
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
+        mapgame.game.player = new mapgame.game.Ship(10,10,1);
     };
 
-    mapgame.game.Actor = function (hp, pp, location) {
+    mapgame.game.mechanics.moveForward = function() {
+      // Here will go the stuff that happens when the player wants to 
+      // continue on down the line.
+      if(debug) {
+        console.log(mapgame.game.player.inventory.food);
+        mapgame.game.changeFoodAmount("add", random(10));
+      }
+
+
+      // Determine random combat chance
+
+      // Determine whether or not the destination is reached
+
+    }
+
+    mapgame.game.Ship = function (hp, pp, location) {
        this.maxhp = hp;
        this.hp = hp;
 
@@ -20,15 +40,20 @@ mapgame.game = { player:{}, };
 
        this.pictureUrl = "../static/images/classes" + type + ".png";
 
+       // Here will go the crew array.
+       // TODO: Make this an array of objects to hold images and 
+       // such. OR you can make em players! wow!
+       this.crew = [];
+
+       this.crew[0] = true // Captain
+       this.crew[1] = true // First mate. How appropriate, they've zero-indexed sailing hierarchy!
+       this.crew[2] = true // Crow's nest guy - used for buffer
+
        this.inventory = {
         food: 10,
         drink: 10,
 
        };
-
-       this.move = function () {
-       };
-
     };
 
     function messageBoxChange(message) {
@@ -53,7 +78,8 @@ mapgame.game = { player:{}, };
     // but whatever, I do what I want!
     mapgame.game.changeFoodAmount = function (addOrSubtract, amount) {
       if (addOrSubtract) {
-        if (addOrSubtract == "add") {
+        // something tells me this logic is a bit convoluted
+        if (addOrSubtract == "add" || addOrSubtract != "sub") {
           if (amount) {
             mapgame.game.player.inventory.food += amount;
           }
@@ -75,18 +101,9 @@ mapgame.game = { player:{}, };
           mapgame.game.player.inventory.food += amount;
         }
         else {
-          mapgame.game.plaeyr.inventory.food++;
+          mapgame.game.player.inventory.food++;
         }
       }
     };
-
-    // Here is where the main loop of the game will go - I'm thinking of a tick that increases each time, 
-    // with 
-
-    mapgame.game.player = new mapgame.game.Actor(10,10,1);
-
-    console.log(mapgame.game.player.hp);
-
-
 
 })()
