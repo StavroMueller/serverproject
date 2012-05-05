@@ -10,7 +10,15 @@ mapgame.game = { player:{}, mechanics:{}, };
         // Crafty.init(stuff);
         mapgame.game.player = new mapgame.game.Ship(10,10,1);
         message("Successful initialization");
+        updateInfoPane();
     };
+
+    function updateInfoPane() {
+      dojo.byId("infopane").innerHTML = "HP: " + mapgame.game.player.hp + "<br />" +
+                                        "PP: " + mapgame.game.player.pp + "<br />" +
+                                        "Food: " + mapgame.game.player.inventory.food + "<br />" +
+                                        "Drink: " + mapgame.game.player.inventory.drink + "<br />";
+    }
 
     // Clears the message box if no argument there. 
     function message(message, elementID) {
@@ -32,6 +40,8 @@ mapgame.game = { player:{}, mechanics:{}, };
         console.log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
       }
+
+      updateInfoPane();
 
       // Determine random combat chance
 

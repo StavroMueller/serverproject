@@ -7,3 +7,8 @@ up into points, and then make kind of a face-away mask to show them the real exp
 Okay, so you could have a point that is passed in to a buffer tool that adds the two resulting clipped rasters
 
 you can clip a something based on a buffer mad from that point - the buffer can be determined by a guy in the crow's nest!
+
+maybe add a thing where there is a basemap where all the places are undefined. wher you are within a certain bounds of the county, it becomes
+visible and you can name it. 
+
+hey that's an ideaake a bunch of services where you can just add the layer on demand when you discover it, so you just start out with spain.
