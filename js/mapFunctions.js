@@ -13,9 +13,17 @@ var mapgame = {
 (function () {
   dojo.require("esri.map");
   dojo.require("esri.toolbars.draw");
+  dojo.require("esri.tasks.query");
 
   mapgame.map.init = function () {
-    mapgame.map.esriMap = new esri.Map("map");
+
+    /*
+    var mapOptions = {
+      extent: new esri.geometry.Extent(-17.779189243, 32.151455282, 43.219845918, 3.928062948),
+    };
+    */
+
+    mapgame.map.esriMap = new esri.Map("map"/*, mapOptions*/);
 
     if (!debug) {
         dojo.connect(mapgame.map.esriMap, "onLoad", function() {
@@ -35,6 +43,11 @@ var mapgame = {
 
   };
 
+  function queryStopPoint(id) {
+    //var query = new esri.tasks.QueryTask;
+    // var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/MainMap/MapServer");
+  }
+
   function addDrawToolbar() {
 
     mapgame.map.draw = new esri.toolbars.Draw(mapgame.map.esriMap);
@@ -42,8 +55,12 @@ var mapgame = {
   }
 
   function addBasemap() {
-    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/MainMap/MapServer";
+    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/MapWithPoints/MapServer";
     var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(basemapUrl);
+
+    //basemap.layerInfos[0].defaultVisibility = false;
+
+    console.log(basemap.layerInfos);
 
     mapgame.map.esriMap.addLayer(basemap);
   }

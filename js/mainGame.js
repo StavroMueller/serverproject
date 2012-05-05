@@ -8,7 +8,7 @@ mapgame.game = { player:{}, mechanics:{}, };
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
-        mapgame.game.player = new mapgame.game.Ship(10,10,1);
+        mapgame.game.player = new mapgame.game.Ship(10,10,100, 1);
         message("Successful initialization");
         updateInfoPane();
     };
@@ -43,19 +43,23 @@ mapgame.game = { player:{}, mechanics:{}, };
 
       updateInfoPane();
 
-      // Determine random combat chance
+      //center the map at the new location using centerat
+
+      // Determine random combat chance - if combat, mayber center and zoom to make more exciting
 
       // Determine whether or not the destination is reached
 
     }
 
-    mapgame.game.Ship = function (hp, pp, location) {
+    mapgame.game.Ship = function (hp, pp, money, location) {
        this.maxhp = hp;
        this.hp = hp;
 
        // for 'people power'
        this.maxpp = pp;
        this.pp = pp;
+
+       this.money = money;
 
        this.location = location; 
 
