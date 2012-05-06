@@ -60,7 +60,13 @@ var mapgame = {
       factor = 1.0;
     }
     log(factor);
-    mapgame.map.esriMap.centerAndZoom(new esri.geometry.Point(point.x, point.y, map.spatialReference), factor);
+    var xmin = point.x - 1000;
+    var ymin = point.y - 1000;
+    var xmax = point.x + 1000;
+    var ymax = point.y + 1000;
+    var newExtent = new esri.geometry.Extent(xmin, ymin, xmax, ymax, mapgame.map.esriMap.spatialReference);
+    mapgame.map.esriMap.centerAt(new esri.geometry.Point(point.x, point.y, map.spatialReference));
+    mapgame.map.esriMap.setExtent(newExtent);
   }
 
   mapgame.map.drawPointOnMap = function (pointNumber) {

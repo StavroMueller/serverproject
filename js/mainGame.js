@@ -19,7 +19,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         message("Successful initialization");
         updateInfoPane();
         if (debug) {
-          createBattlePage(1);
+          // createBattlePage(1);
         }
     };
 
@@ -46,6 +46,13 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       hitButton.setAttribute("type", "button");
       hitButton.setAttribute("id", "battleButton");
       hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[1].desc + " Monster!");
+      hitButton.setAttribute("onclick", "mapgame.game.hitMonster(" + monsterNumber + ")")
+
+      var runButton = document.createElement("input");
+      runButton.setAttribute("type", "button");
+      runButton.setAttribute("id", "battleButton");
+      runButton.setAttribute("value", "Try to run away");
+      runButton.setAttribute("onclick", "mapgame.game.runAway(" + monsterNumber + ")")
 
       log(messageBox.childNodes);
 
@@ -53,9 +60,12 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
-    function hitMonster(monster) {
+    mapgame.game.hitMonster = function(monsterNumber) {
+
       //Here is the code for hitting the monster
+
     }
+   
 
     function getRidOfChildren(element) { //Huh huh.
 
