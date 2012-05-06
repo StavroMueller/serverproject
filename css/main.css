@@ -35,7 +35,7 @@ p  {
 
 #container {
   width:1000px;
-  height:700px;
+  height:500px;
   margin:auto;
   border:5px black dashed;
   /* background-image: url('../static/images/style/croppedpaper.jpg'); */
@@ -44,10 +44,29 @@ p  {
 #map {
   width:50%;
   float:left;
-  height:60%;
+  height:100%;
 }
 
+/*
 #compassCanvas {
   width:100px;
   height:100px;
+}
+*/
+
+#informationContainer {
+  float: right;
+  width:49%;
+  margin: 5px;
+
+}
+
+#buttonBox {
+
+}
+
+#messageBox {
+
+  height:50%;
+
 }

@@ -39,8 +39,13 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     function createBattlePage(monsterNumber) {
+      // Don't need these anymore - using a seperate div for the buttons. 
+      /*
       messageBox = document.getElementById("messagebox");
       mapgame.game.previousMessage = messageBox.innerHTML;
+      */
+
+      buttonBox = document.getElementById("buttonbox");
 
       var hitButton = document.createElement("input");
       hitButton.setAttribute("type", "button");
@@ -54,9 +59,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       runButton.setAttribute("value", "Try to run away");
       runButton.setAttribute("onclick", "mapgame.game.runAway(" + monsterNumber + ")")
 
-      log(messageBox.childNodes);
-
-      messageBox.appendChild(hitButton);
+      buttonBox.appendChild(hitButton);
 
     }
 
