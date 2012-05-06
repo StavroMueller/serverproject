@@ -15,6 +15,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.game.monsterMessages = 2; // Number of each messages the monsters has, for focus.
         mapgame.game.lastMonster = null; // The last monster you interacted with
         mapgame.game.ui.initMainImage();
+        mapgame.game.storyPoint = 0;
         mapgame.game.player = new mapgame.game.Ship(20,10,10,1,5, 1);
 
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,3,1,6, {
@@ -22,7 +23,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
                                                                    "The snake hisses. You get scared and fall over."
                                                                  ],
                                                             miss:[ "The snake tried to bite, but misses",
-                                                                   "The snake tries to but, but slips, because snakes are slimy."
+                                                                   "The snake tries to bite, but slips, because snakes are slimy."
                                                                  ],
                                                             }));
         mapgame.game.monsters.push(new mapgame.game.Monster("Incrediby adorable seahorse", 5, 2, 8, {
@@ -42,7 +43,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
                                                                  ],
                                                             }));
 
-        showIntro();
+        createStoryPointPage(mapgame.game.storyPoint);
         updateInfoPane();
         if (debug) {
           // createBattlePage(1);
@@ -68,15 +69,6 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
                                         "Money: " + mapgame.game.player.money;
     }
 
-    function showIntro() {
-
-      message("Your name is Hammond Cortez de Leon jr. You've just been hired to work on at ship!" +
-              "You get ready for the journey. When you are ready to go, click \"I'm ready!\"." );
-
-      //var 
-
-    }
-
     function haveEnoughMoney(amountToCheckFor) {
       // This checks to see if you still have money
       if(amountToCheckFor) {
@@ -85,11 +77,21 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       return mapgame.game.player.money <= 0 ? false : true;
     }
 
-    function hpCheck() {
-      // This checks if you are still alive.
-
-      return mapgame.game.player.hp <= 0 ? false : true;
-
+    function createStoryPointPage() {
+      // This will use the glbal story point variable.
+      mapgame.game.ui.clearTitle();
+      mapgame.game.ui.clearMessages();
+      mapgame.game.ui.clearButtons();
+      buttonBox = document.getElementById("buttonbox");
+      switch(mapgame.game.storyPoint) {
+        case 0: message("This is the first encounter");
+                message("Your...first...encounter!", "titlebox");
+                // change the scene image here too
+                break;
+        case 1: message("Ths is the second encoiunter");
+                message("secondthyme", "titlebox");
+                break;
+      }
     }
 
     function createStorePage() {
@@ -121,19 +123,23 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.ui.initMainImage = function() {
 
-      mapgame.game.mainImage = document.getElementById("bigimage");
-      mapgame.game.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage.png");
+      mapgame.game.ui.mainImage = document.getElementById("bigimage");
+      mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage.png");
 
+    };
+
+    function drawSceneImage(scene) {
+      mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/scenes/" + scene + ".png");
     }
 
-    function changeMainImage(url) {
-      mapgame.game.mainImage.setAttribute("src", url);
+    function drawMonsterImage(id) {
+      mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/monsters/" + id + ".png");
     }
 
     mapgame.game.storeDone = function () {
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
-    }
+    };
 
     function createBattlePage(monsterNumber) {
       // Don't need these anymore - using a seperate div for the buttons. 
@@ -205,6 +211,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
           mapgame.game.player.damageMe(monsterDamage);
           message( mapgame.game.monsters[monsterNumber].messages.hit[mapgame.game.random(mapgame.game.monsterMessages, true)]);
         }
+        else {
+          message(mapgame.game.monsters[monsterNumber].messages.miss[mapgame.game.random(mapgame.game.monsterMessages, true)]);
+        }
 
         // message out the entire thing right here
         updateInfoPane();
@@ -234,10 +243,6 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.ui.clearButtons = function() {
       clearDiv("buttonbox");
-    };
-
-    mapgame.game.ui.clearMessageBox = function() {
-      clearDiv("messagebox");
     };
 
     mapgame.game.ui.clearTitle = function() {

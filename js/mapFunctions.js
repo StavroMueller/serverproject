@@ -41,8 +41,6 @@ var mapgame = {
         });
     }
 
-    console.log(mapgame.map.esriMap.getLayer(0));
-
     addDrawToolbar();
 
     addBasemap();
@@ -167,8 +165,6 @@ var mapgame = {
     var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(basemapUrl);
 
     //basemap.layerInfos[0].defaultVisibility = false;
-
-    console.log(basemap.layerInfos);
 
     mapgame.map.esriMap.addLayer(basemap);
   }
