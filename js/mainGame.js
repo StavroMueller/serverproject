@@ -1,4 +1,4 @@
-mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
+mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
 
 (function () {
@@ -9,7 +9,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
-        mapgame.game.ui.clearMessages();
+        mapgame.game.ui.clearUI();
         mapgame.game.currentPoint = 0;
         mapgame.game.combatFlag = false;
         mapgame.game.monsterMessages = 2; // Number of each messages the monsters has, for focus.
@@ -58,7 +58,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function combatHappens() {
-      return mapgame.game.random(10) < 7 ? true : false;
+      return mapgame.game.random(10) < 5 ? true : false;
     }
 
     function updateInfoPane() {
@@ -77,57 +77,86 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       return mapgame.game.player.money <= 0 ? false : true;
     }
 
-    function createStoryPointPage() {
-      // This will use the glbal story point variable.
+    // This returns a bool to tell whether or not to enter combat on this turn.
+    // I made this because I didn't want to make another whole object for these.
+    // Yeah, I know...messy.
+    function createStoryPointPage(id) {
       mapgame.game.ui.clearUI();
-      switch(mapgame.game.storyPoint) {
+      switch(id) {
         case 0: firstEncounter();
+                return false;
                 break;
-        case 1: message("Ths is the second encoiunter");
-                message("secondthyme", "titlebox");
+        case 3: secondEncounter();
+                return false;
                 break;
+        default:return true;
       }
     }
 
     function firstEncounter() {
 
       //change the scene image here
-      message("Ann interesting occurance", "titlebox");
+      message("An interesting occurance", "titlebox");
       message("Your name is Hernano Cordez de Leon Jr. You are walking along one day in Huelva, Spain when " +
               "along comes a guy looking worried. You ask him, \"Hey bub, what's eating you?\"");
       message("\"I'm short one crew member! I need someone to take his spot! Will you?");
       message("Being of a nomadic nature, but mostly because you are low on money, you accept his offer and " +
               "join his expedition.");
-
+      addButton("storyButton", "accept", "mapgame.game.buttonDispacher(1,true)");
+      addButton("storyButton", "deny", "mapgame.game.buttonDispacher(1,false)");
 
     }
+
+    function firstResults(accept) {
+      if(accept) {
+        //get goin on the main game
+        mapgame.game.ui.clearUI();
+        message(" \"Excellent! Here, have a feathered hat! We are leaving tommorow, but " + // WHOA SUSPENSE
+
+                "you should probably go get some shopping done while we're in port.\""); //phew
+        message("Oh, and by the way, my name is Christopher Columbus.");
+        message("You wonder why he is speaking in english. Also, why you are thinking in english. Oh well, " +
+                "time to get shopping!");
+        addButton("storyButton", "Let's go!", "mapgame.game.buttonDispacher(\"store\")");
+      }
+      else {
+        gameoverman("Really?");
+      }
+    }
+
+    function secondEncounter() {
+      message("Your first port of call is at the Canary islands!");
+      addButton("storyButton", "Awesome.", "mapgame.game.buttonDispacher(2)");
+    }
+
+    function secondResults() {
+      mapgame.game.ui.clearUI();
+      message("Righto. We'll be on out way.");
+    }
+
+
+    function addButton(cssClass, value, onclick) {
+      var buttonPlace = document.getElementById("buttonbox");
+      var newButton = document.createElement("input");
+      newButton.setAttribute("type", "button");
+      newButton.setAttribute("class", cssClass);
+      newButton.setAttribute("value", value);
+      newButton.setAttribute("onclick", onclick);
+
+      buttonPlace.appendChild(newButton);
+    }
+
 
     function createStorePage() {
       mapgame.game.ui.clearUI();
       message("Hey, you should probably stock up before leaving.")
       buttonBox = document.getElementById("buttonbox");
 
-      var jerkyButton = document.createElement("input");
-      jerkyButton.setAttribute("type", "button");
-      jerkyButton.setAttribute("class", "storeButton");
-      jerkyButton.setAttribute("value", "Buy you some beef jerky.");
-      jerkyButton.setAttribute("onclick", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
+      addButton("storeButton", "Buy you some jerky.(1 money)", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
 
-      var waterButton = document.createElement("input");
-      waterButton.setAttribute("type", "button");
-      waterButton.setAttribute("class", "storeButton");
-      waterButton.setAttribute("value", "Get some water.");
-      waterButton.setAttribute("onclick", "mapgame.game.changeDrinkAmount(\"add\", 1, 1)");
+      addButton("storeButton", "Get some water.(1 money)", "mapgame.game.changeDrinkAmount(\"add\",1,1)");
 
-      var doneButton = document.createElement("input");
-      doneButton.setAttribute("type", "button");
-      doneButton.setAttribute("class", "storeButton");
-      doneButton.setAttribute("value", "Done");
-      doneButton.setAttribute("onclick", "mapgame.game.storeDone()");
-
-      buttonBox.appendChild(waterButton);
-      buttonBox.appendChild(jerkyButton);
-      buttonBox.appendChild(doneButton);
+      addButton("storeButton", "Done!", "mapgame.game.storeDone();");
     }
 
     mapgame.game.ui.initMainImage = function() {
@@ -148,6 +177,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     mapgame.game.storeDone = function () {
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
+      mapgame.game.currentPoint = 1;
     };
 
     function createBattlePage(monsterNumber) {
@@ -156,35 +186,32 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       messageBox = document.getElementById("messagebox");
       mapgame.game.previousMessage = messageBox.innerHTML;
       */
+      updateInfoPane();
       mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearMessages();
       message(mapgame.game.monsters[monsterNumber].desc, "titlebox");
       message("Uh oh! You've encountered a " + mapgame.game.monsters[monsterNumber].desc + "! Quick, hit it with something!");
 
-      buttonBox = document.getElementById("buttonbox");
+      addButton("battleButton", "Hit The " + mapgame.game.monsters[monsterNumber].desc + " Monster!", "mapgame.game.hitMonster(" + monsterNumber + ")");
 
-      var hitButton = document.createElement("input");
-      hitButton.setAttribute("type", "button");
-      hitButton.setAttribute("class", "battleButton");
-      hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[monsterNumber].desc + " Monster!");
-      hitButton.setAttribute("onclick", "mapgame.game.hitMonster(" + monsterNumber + ")")
+      addButton("battleButton", "Take a drink", "mapgame.game.takeDrink()");
 
-      var runButton = document.createElement("input");
-      runButton.setAttribute("type", "button");
-      runButton.setAttribute("class", "battleButton");
-      runButton.setAttribute("value", "Try to run away");
-      runButton.setAttribute("onclick", "mapgame.game.runAway(" + monsterNumber + ")")
+      addButton("battleButton", "Try to run away", "mapgame.game.runAway(" + monsterNumber + ")");
 
-      buttonBox.appendChild(hitButton);
-      buttonBox.appendChild(runButton);
 
+    }
+
+    mapgame.game.takeDrink = function () {
+      changeDrinkAmount("sub");
+      mapgame.game.player.hp += 2 + mapgame.game.random(3);
+      updateInfoPane();
     }
 
     mapgame.game.runAway = function(monsterNumber) {
 
       // This will determine a chace to run away
 
-    }
+    };
 
 
     function playerTurn() {
@@ -199,6 +226,20 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       }
 
       return playerDamage;
+    }
+
+    // This is used for all the choice events - I can get away with just bool because there will always 
+    // be just an accept / deny choice, I think. 
+    mapgame.game.buttonDispacher = function(buttonID, bool) {
+      switch(buttonID) {
+        case 1: firstResults(bool);
+                break; 
+        case 2: secondResults();
+                break;
+        case "store": createStorePage();
+                break;
+      }
+
     }
 
     mapgame.game.hitMonster = function(monsterNumber) {
@@ -244,10 +285,11 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       return monsterDamage;
     }
 
-    function gameoverman(message) {
+    function gameoverman(gameOverMessage) {
       mapgame.map.esriMap.destroy();
-      if(message) {
-        message(message) // message message message
+      mapgame.game.ui.clearUI();
+      if(gameOverMessage) {
+        message(gameOverMessage);// message message message
       }
       // message game over here and start over
     }
@@ -278,6 +320,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     mapgame.game.ui.clearUI = function() {
+      mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearInfoPane();
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
@@ -306,8 +349,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     mapgame.game.mechanics.moveForward = function() {
+      var combat = true;
       // This clears all of the graphics currently drawn on the map.
-      mapgame.game.ui.clearMessages();
+      mapgame.game.ui.clearUI();
       mapgame.map.esriMap.graphics.clear();
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
@@ -321,7 +365,8 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
 
 
       updateInfoPane();
-      if (combatHappens()){
+      combat = createStoryPointPage(mapgame.game.stopPoints[mapgame.game.currentPoint].id);
+      if (combatHappens() && combat){
         mapgame.game.combatFlag = true;
         enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
       }
@@ -430,8 +475,6 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
        };
 
        this.damageMe = function(amount) {
-        log(mapgame.game.player.hp);
-        log(amount);
         mapgame.game.player.hp -= amount;
 
         if (mapgame.game.player.hp <= 0) {
@@ -441,7 +484,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
           }
           else
           {
-            gameoverman();
+            gameoverman("You were killed by " + mapgame.game.lastMonster + ".");
           }
         }   
       };
@@ -453,7 +496,8 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
     // code will be self-documenting, I guess. in other words, you will see
     // magame.game.changeFoodAmount("add", 10); I dunno if this is the right practice or not,
     // but whatever, I do what I want!
-    mapgame.game.changeFoodAmount = function (addOrSubtract, amount, cost) {
+    mapgame.game.changeFoodAmount = function(addOrSubtract, amount, cost) {
+      // This will use the glbal story point variable.
       if(cost) {
         if(haveEnoughMoney(amount)) {
           mapgame.game.player.money -= cost;
