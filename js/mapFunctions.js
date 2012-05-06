@@ -54,10 +54,18 @@ var mapgame = {
 
   };
 
+  mapgame.map.centerMapOnPoint = function (pointNumber, factor) {
+    var point = mapgame.game.stopPoints[pointNumber];
+    if(!factor) {
+      factor = 1.0;
+    }
+    mapgame.map.esriMap.centerAndZoom(new esri.geometry.Point(point.x, point.y, map.spatialReference),
+                        factor);
+  }
+
   mapgame.map.drawPointOnMap = function (pointNumber) {
 
-    log(mapgame.game.stopPoints);
-    point = mapgame.game.stopPoints[pointNumber];
+    var point = mapgame.game.stopPoints[pointNumber];
 
     mapgame.map.esriMap.graphics.add(new esri.Graphic(
       new esri.geometry.Point(point.x, point.y, map.spatialReference),

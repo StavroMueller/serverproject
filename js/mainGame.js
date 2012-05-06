@@ -9,6 +9,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
+        mapgame.game.currentPoint = 0;
         mapgame.game.player = new mapgame.game.Ship(10,10,10,10,100, 1);
 
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,10,3,5));
@@ -79,7 +80,10 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     mapgame.game.mechanics.moveForward = function() {
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
-      mapgame.map.drawPointOnMap(0);
+
+      mapgame.map.drawPointOnMap(mapgame.game.currentPoint);
+      mapgame.map.centerMapOnPoint(mapgame.game.currentPoint, 0.1);
+      mapgame.game.currentPoint++;
       if(debug) {
         log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
@@ -102,7 +106,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
-    mapgame.game.mechanics.addItem = function (item, cost) {
+    function addItem (item, cost) {
 
     }
 
@@ -190,4 +194,33 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       }
     };
 
+    mapgame.game.changeDrinkAmount = function (addOrSubtract, amount) {
+      if (addOrSubtract) {
+        // something tells me this logic is a bit convoluted
+        if (addOrSubtract == "add" || addOrSubtract != "sub") {
+          if (amount) {
+            mapgame.game.player.inventory.drink = amount;
+          }
+          else {
+            mapgame.game.player.inventory.drink++;
+          }
+        }
+        else if (addOrSubtract == "sub") {
+          if (amount) {
+            mapgame.game.player.inventory.drink += amount;
+          }
+          else {
+            mapgame.game.player.inventory.drink--;
+          }
+        }
+      }
+      else {
+        if(amount) {
+          mapgame.game.player.inventory.drink += amount;
+        }
+        else {
+          mapgame.game.player.inventory.drink++;
+        }
+      }
+    };
 })()
