@@ -17,6 +17,8 @@ var mapgame = {
 
   mapgame.map.init = function () {
 
+    mapgame.game.stopPoints = [];
+
     var mapOptions = {
       extent: new esri.geometry.Extent({
         xmin:-17.779189243, 
@@ -46,14 +48,21 @@ var mapgame = {
     addBasemap();
 
     queryStopPoint(0);
-
     // _.map(layers, function(layer))
 
     // initialize the geoprocessor here
 
   };
 
-  function drawPointOnMap(location) {
+  mapgame.map.drawPointOnMap = function (pointNumber) {
+
+    log(mapgame.game.stopPoints);
+    point = mapgame.game.stopPoints[pointNumber];
+
+    mapgame.map.esriMap.graphics.add(new esri.Graphic(
+      new esri.geometry.Point(point.x, point.y, map.spatialReference),
+      new esri.symbol.SimpleMarkerSymbol()
+      ));
 
   }
 
@@ -68,11 +77,7 @@ var mapgame = {
     query.outFields = 
       ["FID"];
 
-    console.log("before query");
     var queryResult = queryTask.execute(query, queryCallback);
-
-    mapgame.game.stopPoints = [];
-
 
   }
 

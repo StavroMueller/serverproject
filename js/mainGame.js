@@ -9,7 +9,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
-        mapgame.game.player = new mapgame.game.Ship(10,10,100, 1);
+        mapgame.game.player = new mapgame.game.Ship(10,10,10,10,100, 1);
 
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,10,3,5));
         mapgame.game.monsters.push(new mapgame.game.Monster("Something else", 10, 5, 5));
@@ -18,7 +18,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         message("Successful initialization");
         updateInfoPane();
         if (debug) {
-          mapgame.game.createBattlePage(1);
+          createBattlePage(1);
         }
     };
 
@@ -37,10 +37,29 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
                                         "Drink: " + mapgame.game.player.inventory.drink + "<br />";
     }
 
-    mapgame.game.createBattlePage = function (monsterNumber) {
+    function createBattlePage(monsterNumber) {
       messageBox = document.getElementById("messagebox");
-      var previousContent = messageBox.innerHTML;
-      log(previousContent);
+      mapgame.game.previousMessage = messageBox.innerHTML;
+
+      var hitButton = document.createElement("input");
+      hitButton.setAttribute("type", "button");
+      hitButton.setAttribute("id", "battleButton");
+      hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[1].desc + " Monster!");
+
+      log(messageBox.childNodes);
+
+      messageBox.appendChild(hitButton);
+
+    }
+
+    function hitMonster(monster) {
+      //Here is the code for hitting the monster
+    }
+
+    function getRidOfChildren(element) { //Huh huh.
+
+      // This does what it needs; howver, just in case I don't want to use dojo, I'll leave the function.
+      dojo.empty(element);
 
     }
 
@@ -60,6 +79,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     mapgame.game.mechanics.moveForward = function() {
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
+      mapgame.map.drawPointOnMap(0);
       if(debug) {
         log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
@@ -87,6 +107,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     function enterCombat(monster) {
+
       /*
       switch (monster) {
         case 1: 
