@@ -79,14 +79,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function createStoryPointPage() {
       // This will use the glbal story point variable.
-      mapgame.game.ui.clearTitle();
-      mapgame.game.ui.clearMessages();
-      mapgame.game.ui.clearButtons();
-      buttonBox = document.getElementById("buttonbox");
+      mapgame.game.ui.clearUI();
       switch(mapgame.game.storyPoint) {
-        case 0: message("This is the first encounter");
-                message("Your...first...encounter!", "titlebox");
-                // change the scene image here too
+        case 0: firstEncounter();
                 break;
         case 1: message("Ths is the second encoiunter");
                 message("secondthyme", "titlebox");
@@ -94,7 +89,21 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       }
     }
 
+    function firstEncounter() {
+
+      //change the scene image here
+      message("Ann interesting occurance", "titlebox");
+      message("Your name is Hernano Cordez de Leon Jr. You are walking along one day in Huelva, Spain when " +
+              "along comes a guy looking worried. You ask him, \"Hey bub, what's eating you?\"");
+      message("\"I'm short one crew member! I need someone to take his spot! Will you?");
+      message("Being of a nomadic nature, but mostly because you are low on money, you accept his offer and " +
+              "join his expedition.");
+
+
+    }
+
     function createStorePage() {
+      mapgame.game.ui.clearUI();
       message("Hey, you should probably stock up before leaving.")
       buttonBox = document.getElementById("buttonbox");
 
@@ -235,8 +244,11 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       return monsterDamage;
     }
 
-    function gameoverman() {
+    function gameoverman(message) {
       mapgame.map.esriMap.destroy();
+      if(message) {
+        message(message) // message message message
+      }
       // message game over here and start over
     }
    
@@ -267,6 +279,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.ui.clearUI = function() {
       mapgame.game.ui.clearInfoPane();
+      mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
     };
 
