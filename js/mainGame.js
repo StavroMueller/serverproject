@@ -82,7 +82,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       // continue on down the line.
 
       mapgame.map.drawPointOnMap(mapgame.game.currentPoint);
-      mapgame.map.centerMapOnPoint(mapgame.game.currentPoint, 0.1);
+      mapgame.map.centerMapOnPoint(mapgame.game.currentPoint,   0.00000005);
       mapgame.game.currentPoint++;
       if(debug) {
         log(mapgame.game.player.inventory.food);

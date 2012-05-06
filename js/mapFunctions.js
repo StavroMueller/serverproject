@@ -59,8 +59,8 @@ var mapgame = {
     if(!factor) {
       factor = 1.0;
     }
-    mapgame.map.esriMap.centerAndZoom(new esri.geometry.Point(point.x, point.y, map.spatialReference),
-                        factor);
+    log(factor);
+    mapgame.map.esriMap.centerAndZoom(new esri.geometry.Point(point.x, point.y, map.spatialReference), factor);
   }
 
   mapgame.map.drawPointOnMap = function (pointNumber) {
@@ -69,7 +69,8 @@ var mapgame = {
 
     mapgame.map.esriMap.graphics.add(new esri.Graphic(
       new esri.geometry.Point(point.x, point.y, map.spatialReference),
-      new esri.symbol.SimpleMarkerSymbol()
+      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderShip.png", 16, 16) // This bugs me. The folder should be renamed to markerSymbols.
+      // new esri.symbol.SimpleMarkerSymbol()
       ));
 
   }
