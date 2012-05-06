@@ -9,6 +9,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     mapgame.game.init = function() {
         // init stuff goes here
         // Crafty.init(stuff);
+        clearDiv();
         mapgame.game.currentPoint = 0;
         mapgame.game.combatFlag = false;
         mapgame.game.player = new mapgame.game.Ship(10,10,10,1,5, 1);
@@ -177,24 +178,30 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     mapgame.game.hitMonster = function(monsterNumber) {
-      var missed = true;
       var playerDamage = playerTurn()
       if(playerDamage) { 
         mapgame.game.monsters[monsterNumber].damageMe(playerDamage)
-        missed = false;
       }
       // damage the monster here
       // now it's the monster's turn
-      monsterTurn(monsterNumber);
+      var monsterDamage = monsterTurn(monsterNumber);
       // damage the player here
+      if(monsterDamage) {
+        mapgame.game.player.damageMe(monsterDamage);
+      }
+
       // message out the entire thing right here
       updateInfoPane();
     }
 
     function monsterTurn(monsterNumber) {
       if(mapgame.game.random(10) <= mapgame.game.monsters[monsterNumber].chanceToHit) { // Monster hits
-
+        var monsterDamage = mapgame.game.monsters[monsterNumber].baseDamage;
       }
+      else {
+        var monsterDamage = false; // monster misses
+      }
+
     }
 
     function gameoverman() {
@@ -206,7 +213,12 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     function clearDiv(element) { //Huh huh.
 
       // This does what it needs; howver, just in case I don't want to use dojo, I'll leave the function.
-      dojo.empty(element);
+      if(element) {
+        dojo.empty(element);
+      }
+      else {
+        dojo.empty("messagebox");
+      }
 
     }
 
@@ -216,20 +228,23 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     // Clears the message box if no argument there. 
-    function message(message, elementID) {
+    function message(message) {
+      var messageArea = document.getElementById("messagebox");
       if (!message) {
-        message = '';
+        message = document.createTextNode('');
       }
-      if (elementID) {
-        dojo.byId(elementID).innerHTML = message;
-      }
-      else {
-        dojo.byId("messagebox").innerHTML = message;
-      }
+
+      var lineBreak = document.createElement("br");
+      var messageText = document.createTextNode(message);
+
+      messageArea.appendChild(lineBreak);
+      messageArea.appendChild(messageText);
+
     }
 
     mapgame.game.mechanics.moveForward = function() {
       // This clears all of the graphics currently drawn on the map.
+      clearDiv();
       mapgame.map.esriMap.graphics.clear();
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
@@ -245,6 +260,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       updateInfoPane();
       if (combatHappens()){
         enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
+      }
+      else {
+        message("You move on down the line.");
       }
       /*
       else if (eventHappens()) {
@@ -274,7 +292,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         }
         else
         {
-          gameoverman();
+          if(!debug) {
+            gameoverman();
+          }
         }
       }
     }
