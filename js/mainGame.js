@@ -16,26 +16,65 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         mapgame.game.monsters.push(new mapgame.game.Monster("Something else", 10, 5, 5));
         mapgame.game.monsters.push(new mapgame.game.Monster("Aaand something else", 10, 5, 5));
 
-        message("Successful initialization");
+        showIntro();
         updateInfoPane();
         if (debug) {
           // createBattlePage(1);
+          createStorePage();
         }
     };
 
+    // I'm thinking this function will go away in lieu of explicitly declared functions,
+    // for history's sake.
     function eventHappens() {
       return random(10) < 7 ? true : false;
     }
 
     function combatHappens() {
-      return random(10) < 4 ? true : false;
+      return random(10) < 7 ? true : false;
     }
 
     function updateInfoPane() {
-      dojo.byId("infopane").innerHTML = "HP: " + mapgame.game.player.hp + "<br />" +
-                                        "PP: " + mapgame.game.player.pp + "<br />" +
-                                        "Food: " + mapgame.game.player.inventory.food + "<br />" +
-                                        "Drink: " + mapgame.game.player.inventory.drink + "<br />";
+      dojo.byId("infopane").innerHTML = "HP: " + mapgame.game.player.hp + "  " +
+                                        "PP: " + mapgame.game.player.pp + "  " +
+                                        "Food: " + mapgame.game.player.inventory.food + "  " +
+                                        "Drink: " + mapgame.game.player.inventory.drink + "  " +
+                                        "Money: " + mapgame.game.player.money;
+    }
+
+    function showIntro() {
+
+      message("Your name is Hammond Cortez de Leon jr. You've just been hired to work on at ship!" +
+              "You get ready for the journey. When you are ready to go, click \"Go Forward\"." )
+
+    }
+
+    function moneyCheck() {
+      // This checks to see if you still have money
+    }
+
+    function createStorePage() {
+      message("Hey, you should probably stock up before leaving.")
+      buttonBox = document.getElementById("buttonbox");
+
+      var jerkyButton = document.createElement("input");
+      jerkyButton.setAttribute("type", "button");
+      jerkyButton.setAttribute("class", "storeButton");
+      jerkyButton.setAttribute("value", "Buy you some beef jerky.");
+      jerkyButton.setAttribute("onclick", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
+
+      var doneButton = document.createElement("input");
+      doneButton.setAttribute("type", "button");
+      doneButton.setAttribute("class", "storeButton");
+      doneButton.setAttribute("value", "Done");
+      doneButton.setAttribute("onclick", "mapgame.game.storeDone()");
+
+      buttonBox.appendChild(jerkyButton);
+      buttonBox.appendChild(doneButton);
+    }
+
+    mapgame.game.storeDone = function () {
+      clearDiv("buttonbox");
     }
 
     function createBattlePage(monsterNumber) {
@@ -49,13 +88,13 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
       var hitButton = document.createElement("input");
       hitButton.setAttribute("type", "button");
-      hitButton.setAttribute("id", "battleButton");
+      hitButton.setAttribute("class", "battleButton");
       hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[1].desc + " Monster!");
       hitButton.setAttribute("onclick", "mapgame.game.hitMonster(" + monsterNumber + ")")
 
       var runButton = document.createElement("input");
       runButton.setAttribute("type", "button");
-      runButton.setAttribute("id", "battleButton");
+      runButton.setAttribute("class", "battleButton");
       runButton.setAttribute("value", "Try to run away");
       runButton.setAttribute("onclick", "mapgame.game.runAway(" + monsterNumber + ")")
 
@@ -70,7 +109,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
    
 
-    function getRidOfChildren(element) { //Huh huh.
+    function clearDiv(element) { //Huh huh.
 
       // This does what it needs; howver, just in case I don't want to use dojo, I'll leave the function.
       dojo.empty(element);
@@ -95,20 +134,23 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       // continue on down the line.
 
       mapgame.map.drawPointOnMap(mapgame.game.currentPoint);
-      mapgame.map.centerMapOnPoint(mapgame.game.currentPoint,   0.00000005);
+      // mapgame.map.centerMapOnPoint(mapgame.game.currentPoint,   0.00000005);
       mapgame.game.currentPoint++;
       if(debug) {
         log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
       }
 
+
       updateInfoPane();
       if (combatHappens()){
         enterCombat(random(3)); // The random determines the monster in the function
       }
+      /*
       else if (eventHappens()) {
         enterEvent(random(5));  // The random determines the event in the function
       }
+      */
 
 
       //center the map at the new location using centerat
@@ -125,11 +167,8 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     function enterCombat(monster) {
 
-      /*
-      switch (monster) {
-        case 1: 
-      }
-      */
+        createBattlePage(monster)
+
     }
 
     // Why no id to use to identify the monster? At this point, the place in the main array is the unique identifier.
@@ -177,7 +216,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     // code will be self-documenting, I guess. in other words, you will see
     // magame.game.changeFoodAmount("add", 10); I dunno if this is the right practice or not,
     // but whatever, I do what I want!
-    mapgame.game.changeFoodAmount = function (addOrSubtract, amount) {
+    mapgame.game.changeFoodAmount = function (addOrSubtract, amount, cost) {
       if (addOrSubtract) {
         // something tells me this logic is a bit convoluted
         if (addOrSubtract == "add" || addOrSubtract != "sub") {
@@ -205,6 +244,10 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
           mapgame.game.player.inventory.food++;
         }
       }
+      if(cost) {
+        mapgame.game.player.money -= cost;
+      }
+      updateInfoPane();
     };
 
     mapgame.game.changeDrinkAmount = function (addOrSubtract, amount) {
@@ -235,5 +278,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
           mapgame.game.player.inventory.drink++;
         }
       }
+      if (cost) {
+        mapgame.game.player.money -= cost;
+      }
+      updateInfoPane();
     };
 })()

@@ -57,7 +57,9 @@ p  {
 #informationContainer {
   float: right;
   width:49%;
-  margin: 5px;
+  margin: auto; /*Whatever, I'll fix this later.*/
+  text-align: center;
+
 
 }
 
