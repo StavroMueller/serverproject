@@ -74,12 +74,19 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       jerkyButton.setAttribute("value", "Buy you some beef jerky.");
       jerkyButton.setAttribute("onclick", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
 
+      var waterButton = document.createElement("input");
+      waterButton.setAttribute("type", "button");
+      waterButton.setAttribute("class", "storeButton");
+      waterButton.setAttribute("value", "Get some water.");
+      waterButton.setAttribute("onclick", "mapgame.game.changeDrinkAmount(\"add\", 1, 1)");
+
       var doneButton = document.createElement("input");
       doneButton.setAttribute("type", "button");
       doneButton.setAttribute("class", "storeButton");
       doneButton.setAttribute("value", "Done");
       doneButton.setAttribute("onclick", "mapgame.game.storeDone()");
 
+      buttonBox.appendChild(waterButton);
       buttonBox.appendChild(jerkyButton);
       buttonBox.appendChild(doneButton);
     }
@@ -268,7 +275,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       updateInfoPane();
     };
 
-    mapgame.game.changeDrinkAmount = function (addOrSubtract, amount) {
+    mapgame.game.changeDrinkAmount = function (addOrSubtract, amount, cost) {
       if(cost) {
         if(haveEnoughMoney(amount)) {
           mapgame.game.player.money -= cost;
@@ -282,7 +289,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         // something tells me this logic is a bit convoluted
         if (addOrSubtract == "add" || addOrSubtract != "sub") {
           if (amount) {
-            mapgame.game.player.inventory.drink = amount;
+            mapgame.game.player.inventory.drink += amount;
           }
           else {
             mapgame.game.player.inventory.drink++;
