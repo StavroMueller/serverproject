@@ -14,6 +14,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.game.combatFlag = false;
         mapgame.game.monsterMessages = 2; // Number of each messages the monsters has, for focus.
         mapgame.game.lastMonster = null; // The last monster you interacted with
+        mapgame.game.ui.initMainImage();
         mapgame.game.player = new mapgame.game.Ship(20,10,10,1,5, 1);
 
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,3,1,6, {
@@ -118,10 +119,10 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], ui:{}, };
       buttonBox.appendChild(doneButton);
     }
 
-    mapgame.game.initMainImage = function() {
+    mapgame.game.ui.initMainImage = function() {
 
-      mapgame.game.mainImage = document.createElement("img");
-      mapgame.game.mainImage.setAttribute("src", "someimage");
+      mapgame.game.mainImage = document.getElementById("bigimage");
+      mapgame.game.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage.png");
 
     }
 

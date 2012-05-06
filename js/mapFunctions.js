@@ -66,7 +66,7 @@ var mapgame = {
     var ymax = point.y + 1000;
     var newExtent = new esri.geometry.Extent(xmin, ymin, xmax, ymax, mapgame.map.esriMap.spatialReference);
     mapgame.map.esriMap.centerAt(new esri.geometry.Point(point.x, point.y, map.spatialReference));
-    mapgame.map.esriMap.setExtent(newExtent);
+    //mapgame.map.esriMap.setExtent(newExtent);
   }
 
   mapgame.map.drawShipOnMap = function () {
@@ -80,6 +80,7 @@ var mapgame = {
       );
 
     mapgame.map.esriMap.graphics.add(mapgame.map.shipGraphic);
+    mapgame.map.centerMapOnPoint(mapgame.game.currentPoint);
 
   }
 
@@ -110,7 +111,7 @@ var mapgame = {
     var point = mapgame.game.stopPoints[mapgame.game.currentPoint];
 
 
-    var randomPoint = randomPointAbout(point, 10000);
+    var randomPoint = randomPointAbout(point, 100000);
 
 
     mapgame.map.monsterGraphic = new esri.Graphic(
@@ -139,7 +140,7 @@ var mapgame = {
 
   function queryCallback(results) {
 
-    console.log(results);
+    // Let's get this query thing outta ArcGIS' hands as quickly as possible.
     _.each(results.features, function (feature) {
 
       mapgame.game.stopPoints.push({

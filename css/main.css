@@ -35,7 +35,7 @@ p  {
 
 #container {
   width:1000px;
-  height:500px;
+  height:600px;
   margin:auto;
   border:5px black dashed;
   /* background-image: url('../static/images/style/croppedpaper.jpg'); */
@@ -48,6 +48,11 @@ p  {
   background-color: #CCCCFF;
 }
 
+#bigimage {
+
+  height:200px;
+
+}
 /*
 #compassCanvas {
   width:100px;
@@ -57,6 +62,7 @@ p  {
 
 #informationContainer {
   float: right;
+  height:100%;
   width:500px;
   margin: auto; /*Whatever, I'll fix this later.*/
   text-align: center;
