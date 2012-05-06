@@ -181,6 +181,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       var playerDamage = playerTurn()
       if(playerDamage) { 
         mapgame.game.monsters[monsterNumber].damageMe(playerDamage)
+        message("You hit the " + mapgame.game.monsters[monsterNumber].desc + " for " + playerDamage + " damage!");
       }
       // damage the monster here
       // now it's the monster's turn
