@@ -11,17 +11,35 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         // Crafty.init(stuff);
         mapgame.game.currentPoint = 0;
         mapgame.game.combatFlag = false;
-        mapgame.game.player = new mapgame.game.Ship(10,10,10,10,100, 1);
+        mapgame.game.player = new mapgame.game.Ship(10,10,10,1,5, 1);
 
-        mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,10,3,5));
-        mapgame.game.monsters.push(new mapgame.game.Monster("Something else", 10, 5, 5));
-        mapgame.game.monsters.push(new mapgame.game.Monster("Aaand something else", 10, 5, 5));
+        mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,3,1,6, {
+                                                            hit: [ "The snake takes a bite",
+                                                                   "The snake hisses. You get scared and fall over.",
+                                                                 ],
+                                                            miss:[ "The snake tried to bite, but misses",
+                                                                   "The snake tries to but, but slips, because snakes are slimy."
+                                                                 ],
+                                                            }));
+        mapgame.game.monsters.push(new mapgame.game.Monster("Incrediby adorable seahorse", 5, 2, 8, {
+                                                            hit: [ "It looks at you adorably. You think it deserves a chance, so you hit yourself.",
+                                                                   "The something else does something else."
+                                                                 ],
+                                                            miss:[ "It misses."
+                                                                 ],
+                                                            }));
+        mapgame.game.monsters.push(new mapgame.game.Monster("Giant Enemy Crab", 6, 3, 9, {
+                                                            hit: [ "The giant enemy crab snips off a part of your ear.",
+                                                                 ],
+                                                            miss:[ "The crab tries to snip you, but it doesn't for some reason."
+                                                                 ],
+                                                            }));
 
         showIntro();
         updateInfoPane();
         if (debug) {
           // createBattlePage(1);
-          createStorePage();
+          // createStorePage();
         }
     };
 
@@ -46,7 +64,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     function showIntro() {
 
       message("Your name is Hammond Cortez de Leon jr. You've just been hired to work on at ship!" +
-              "You get ready for the journey. When you are ready to go, click \"Go Forward\"." )
+              "You get ready for the journey. When you are ready to go, click \"I'm ready!\"." );
+
+      //var 
 
     }
 
@@ -131,6 +151,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       runButton.setAttribute("onclick", "mapgame.game.runAway(" + monsterNumber + ")")
 
       buttonBox.appendChild(hitButton);
+      buttonBox.appendChild(runButton);
 
     }
 
@@ -140,14 +161,45 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
+
+    function playerTurn() {
+
+      if (mapgame.game.random(10, false) <= mapgame.game.player.chanceToHit) { //Player hits
+
+        var playerDamage = mapgame.game.player.baseDamage + mapgame.game.random(2); //from 0 to 2
+
+      }
+      else {
+        var playerDamage = false;
+      }
+
+      return playerDamage;
+    }
+
     mapgame.game.hitMonster = function(monsterNumber) {
+      var missed = true;
+      var playerDamage = playerTurn()
+      if(playerDamage) { 
+        mapgame.game.monsters[monsterNumber].damageMe(playerDamage)
+        missed = false;
+      }
+      // damage the monster here
+      // now it's the monster's turn
+      monsterTurn(monsterNumber);
+      // damage the player here
+      // message out the entire thing right here
+      updateInfoPane();
+    }
 
-      //Here is the code for hitting the monster
+    function monsterTurn(monsterNumber) {
+      if(mapgame.game.random(10) <= mapgame.game.monsters[monsterNumber].chanceToHit) { // Monster hits
 
+      }
     }
 
     function gameoverman() {
       mapgame.map.esriMap.destroy();
+      // message game over here and start over
     }
    
 
@@ -159,7 +211,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     function clearUI() {
-      clearDiv("infobox");
+      clearDiv("infopane");
       clearDiv("buttonbox");
     }
 
@@ -177,6 +229,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     mapgame.game.mechanics.moveForward = function() {
+      // This clears all of the graphics currently drawn on the map.
       mapgame.map.esriMap.graphics.clear();
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
@@ -213,21 +266,42 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
+    function damagePlayer(amount) {
+      mapgame.game.player.hp -= amount;
+
+      if (mapgame.game.player.hp <= 0) {
+        if (mapgame.game.random(10, false) <= 3) {
+        }
+        else
+        {
+          gameoverman();
+        }
+      }
+    }
+
+
     function enterCombat(monster) {
         createBattlePage(monster);
         mapgame.map.drawMonsterOnMap(monster);
+        mapgame.combatFlag = true;
         while (mapgame.game.combatFlag) {
+
+          // Dunno yet
 
         }         
 
     }
 
     // Why no id to use to identify the monster? At this point, the place in the main array is the unique identifier.
-    mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit) {
+    mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit, messages) {
       this.desc = desc;
-      this.hp = hp
+      this.maxhp = hp;
+      this.hp = hp;
       this.baseDamage = baseDamage;
       this.chanceToHit = chanceToHit;
+      this.messages = messages;
+      this.damageMe = function(amount) {
+      }
     }
 
     mapgame.game.Ship = function (hp, pp, money, baseDamage, chanceToHit, location) {
@@ -259,6 +333,21 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         drink: 10,
 
        };
+
+       this.damageMe = function(amount) {
+        mapgame.game.player.hp -= amount;
+
+        if (mapgame.game.player.hp <= 0) {
+          if (mapgame.game.random(10, false) <= 3) {
+            message("You suddenly feel better.");
+            mapgame.game.player.hp = 5 + mapgame.game.random(2); // You were saved!
+          }
+          else
+          {
+            gameoverman();
+          }
+        }   
+      };
     };
 
     // TODO: This could be abstracted down a bit. Also, I feel like it could be done a lot better.

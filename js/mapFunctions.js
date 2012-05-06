@@ -79,8 +79,6 @@ var mapgame = {
       // new esri.symbol.SimpleMarkerSymbol()
       );
 
-    log(mapgame.map.esriMap.grapics);
-    mapgame.map.esriMap.graphics.remove(mapgame.map.shipGraphic);
     mapgame.map.esriMap.graphics.add(mapgame.map.shipGraphic);
 
   }
@@ -120,7 +118,6 @@ var mapgame = {
       new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderMonster.png", 16, 16)
       );
 
-    mapgame.map.removeMonsterGraphic();
     mapgame.map.esriMap.graphics.add(mapgame.map.monsterGraphic);
 
   }
