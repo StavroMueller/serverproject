@@ -1,4 +1,7 @@
 Okay, maybe at the end there should be an option at the end to print your map, or export it somehow...
+
+You can have "special moves" that let you use your vaious crew members as special moves - for example, the crow's nest.
+
 this would be pretty cool.
 
 Okay, you could also edit the way the map is displayed...you can split the path
@@ -12,3 +15,7 @@ maybe add a thing where there is a basemap where all the places are undefined. w
 visible and you can name it. 
 
 hey that's an ideaake a bunch of services where you can just add the layer on demand when you discover it, so you just start out with spain.
+
+There could be a buton that links to a function that adds thst good and sbtracts money like in a store
+
+we can use the distnce calculator to determine hit chances

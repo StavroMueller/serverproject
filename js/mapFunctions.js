@@ -69,16 +69,59 @@ var mapgame = {
     mapgame.map.esriMap.setExtent(newExtent);
   }
 
-  mapgame.map.drawPointOnMap = function (pointNumber) {
+  mapgame.map.drawShipOnMap = function () {
 
-    mapgame.map.esriMap.graphics.clear();
-    var point = mapgame.game.stopPoints[pointNumber];
+    var point = mapgame.game.stopPoints[mapgame.game.currentPoint];
 
-    mapgame.map.esriMap.graphics.add(new esri.Graphic(
+    mapgame.map.shipGraphic = new esri.Graphic(
       new esri.geometry.Point(point.x, point.y, map.spatialReference),
       new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderShip.png", 16, 16) // This bugs me. The folder should be renamed to markerSymbols.
       // new esri.symbol.SimpleMarkerSymbol()
-      ));
+      );
+
+    log(mapgame.map.esriMap.grapics);
+    mapgame.map.esriMap.graphics.remove(mapgame.map.shipGraphic);
+    mapgame.map.esriMap.graphics.add(mapgame.map.shipGraphic);
+
+  }
+
+  function randomPointAbout(point, distance) {
+    if (mapgame.game.random(11) <= 5) {
+      point.x += distance;
+    }
+    else {
+      point.x -= distance;
+    }
+    if (mapgame.game.random(11) <= 5) {
+      point.y += distance;
+    }
+    else {
+      point.y -= distance;
+    }
+
+    return point;
+  }
+
+  // Need this function because might have to remove without calling the draw function.
+  mapgame.map.removeMonsterGraphic = function () {
+    mapgame.map.esriMap.graphics.remove(mapgame.map.monsterGraphic);
+  }
+
+  mapgame.map.drawMonsterOnMap = function (monster) {
+
+    var point = mapgame.game.stopPoints[mapgame.game.currentPoint];
+
+
+    var randomPoint = randomPointAbout(point, 10000);
+
+
+    mapgame.map.monsterGraphic = new esri.Graphic(
+      new esri.geometry.Point(randomPoint.x, randomPoint.y, map.spatialReference),
+      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderMonster.png", 16, 16)
+      );
+
+    mapgame.map.removeMonsterGraphic();
+    mapgame.map.esriMap.graphics.add(mapgame.map.monsterGraphic);
 
   }
 

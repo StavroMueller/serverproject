@@ -2,8 +2,8 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
 
 (function () {
-    function random(number) {
-      return Math.floor((Math.random()*number) + 1);
+    mapgame.game.random = function(number, zeroIndexed) {
+      return zeroIndexed ? Math.floor(Math.random()*number) : Math.floor((Math.random()*number) + 1);
     }
 
     mapgame.game.init = function() {
@@ -27,11 +27,11 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     // I'm thinking this function will go away in lieu of explicitly declared functions,
     // for history's sake.
     function eventHappens() {
-      return random(10) < 7 ? true : false;
+      return mapgame.game.random(10) < 7 ? true : false;
     }
 
     function combatHappens() {
-      return random(10) < 7 ? true : false;
+      return mapgame.game.random(10) < 7 ? true : false;
     }
 
     function updateInfoPane() {
@@ -91,6 +91,17 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       buttonBox.appendChild(doneButton);
     }
 
+    mapgame.game.initMainImage = function() {
+
+      mapgame.game.mainImage = document.createElement("img");
+      mapgame.game.mainImage.setAttribute("src", "someimage");
+
+    }
+
+    function changeMainImage(url) {
+      mapgame.game.mainImage.setAttribute("src", url);
+    }
+
     mapgame.game.storeDone = function () {
       message();
       clearDiv("buttonbox");
@@ -102,13 +113,14 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       messageBox = document.getElementById("messagebox");
       mapgame.game.previousMessage = messageBox.innerHTML;
       */
+      message("Uh oh! You've encountered a " + mapgame.game.monsters[monsterNumber].desc + "! Quick, hit it with something!");
 
       buttonBox = document.getElementById("buttonbox");
 
       var hitButton = document.createElement("input");
       hitButton.setAttribute("type", "button");
       hitButton.setAttribute("class", "battleButton");
-      hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[1].desc + " Monster!");
+      hitButton.setAttribute("value", "Hit The " + mapgame.game.monsters[monsterNumber].desc + " Monster!");
       hitButton.setAttribute("onclick", "mapgame.game.hitMonster(" + monsterNumber + ")")
 
       var runButton = document.createElement("input");
@@ -121,10 +133,20 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
+    mapgame.game.runAway = function(monsterNumber) {
+
+      // This will determine a chace to run away
+
+    }
+
     mapgame.game.hitMonster = function(monsterNumber) {
 
       //Here is the code for hitting the monster
 
+    }
+
+    function gameoverman() {
+      mapgame.map.esriMap.destroy();
     }
    
 
@@ -133,6 +155,11 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       // This does what it needs; howver, just in case I don't want to use dojo, I'll leave the function.
       dojo.empty(element);
 
+    }
+
+    function clearUI() {
+      clearDiv("infobox");
+      clearDiv("buttonbox");
     }
 
     // Clears the message box if no argument there. 
@@ -149,21 +176,21 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     mapgame.game.mechanics.moveForward = function() {
+      mapgame.map.esriMap.graphics.clear();
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
 
-      mapgame.map.drawPointOnMap(mapgame.game.currentPoint);
+      mapgame.map.drawShipOnMap(); // uses mapgame.game.currentPoint
       // mapgame.map.centerMapOnPoint(mapgame.game.currentPoint,   0.00000005);
-      mapgame.game.currentPoint++;
       if(debug) {
-        log(mapgame.game.player.inventory.food);
-        mapgame.game.changeFoodAmount("add", random(10));
+        // log(mapgame.game.player.inventory.food);
+        // mapgame.game.changeFoodAmount("add", random(10));
       }
 
 
       updateInfoPane();
       if (combatHappens()){
-        enterCombat(random(3)); // The random determines the monster in the function
+        enterCombat(mapgame.game.random(2, true)); // The random determines the monster in the function
       }
       /*
       else if (eventHappens()) {
@@ -178,6 +205,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
       // Determine whether or not the destination is reached
 
+      mapgame.game.currentPoint++;
     }
 
     function addItem (item, cost) {
@@ -185,8 +213,8 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     function enterCombat(monster) {
-
-        createBattlePage(monster)
+        createBattlePage(monster);
+        mapgame.map.drawMonsterOnMap(monster);
 
     }
 
