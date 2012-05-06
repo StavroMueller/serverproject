@@ -10,6 +10,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         // init stuff goes here
         // Crafty.init(stuff);
         mapgame.game.currentPoint = 0;
+        mapgame.game.combatFlag = false;
         mapgame.game.player = new mapgame.game.Ship(10,10,10,10,100, 1);
 
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,10,3,5));
@@ -190,7 +191,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
       updateInfoPane();
       if (combatHappens()){
-        enterCombat(mapgame.game.random(2, true)); // The random determines the monster in the function
+        enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
       }
       /*
       else if (eventHappens()) {
@@ -215,6 +216,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     function enterCombat(monster) {
         createBattlePage(monster);
         mapgame.map.drawMonsterOnMap(monster);
+        while (mapgame.game.combatFlag) {
+
+        }         
 
     }
 
