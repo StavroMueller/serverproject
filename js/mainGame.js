@@ -17,6 +17,9 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
         message("Successful initialization");
         updateInfoPane();
+        if (debug) {
+          mapgame.game.createBattlePage(1);
+        }
     };
 
     function eventHappens() {
@@ -32,6 +35,13 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
                                         "PP: " + mapgame.game.player.pp + "<br />" +
                                         "Food: " + mapgame.game.player.inventory.food + "<br />" +
                                         "Drink: " + mapgame.game.player.inventory.drink + "<br />";
+    }
+
+    mapgame.game.createBattlePage = function (monsterNumber) {
+      messageBox = document.getElementById("messagebox");
+      var previousContent = messageBox.innerHTML;
+      log(previousContent);
+
     }
 
     // Clears the message box if no argument there. 
@@ -51,7 +61,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       // Here will go the stuff that happens when the player wants to 
       // continue on down the line.
       if(debug) {
-        console.log(mapgame.game.player.inventory.food);
+        log(mapgame.game.player.inventory.food);
         mapgame.game.changeFoodAmount("add", random(10));
       }
 
@@ -72,6 +82,10 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
+    mapgame.game.mechanics.addItem = function (item, cost) {
+
+    }
+
     function enterCombat(monster) {
       /*
       switch (monster) {
@@ -80,6 +94,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
       */
     }
 
+    // Why no id to use to identify the monster? At this point, the place in the main array is the unique identifier.
     mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit) {
       this.desc = desc;
       this.hp = hp
@@ -95,6 +110,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
        this.pp = pp;
        this.money = money;
        this.baseDamage = baseDamage;
+
        this.chanceToHit = chanceToHit;
 
        this.location = location; 
