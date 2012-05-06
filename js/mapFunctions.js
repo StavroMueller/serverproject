@@ -71,6 +71,7 @@ var mapgame = {
 
   mapgame.map.drawPointOnMap = function (pointNumber) {
 
+    mapgame.map.esriMap.graphics.clear();
     var point = mapgame.game.stopPoints[pointNumber];
 
     mapgame.map.esriMap.graphics.add(new esri.Graphic(
