@@ -49,8 +49,19 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
 
     }
 
-    function moneyCheck() {
+    function haveEnoughMoney(amountToCheckFor) {
       // This checks to see if you still have money
+      if(amountToCheckFor) {
+        return mapgame.game.player.money < amountToCheckFor ? false : true;
+      }
+      return mapgame.game.player.money <= 0 ? false : true;
+    }
+
+    function hpCheck() {
+      // This checks if you are still alive.
+
+      return mapgame.game.player.hp <= 0 ? false : true;
+
     }
 
     function createStorePage() {
@@ -74,6 +85,7 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     }
 
     mapgame.game.storeDone = function () {
+      message();
       clearDiv("buttonbox");
     }
 
@@ -217,6 +229,15 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
     // magame.game.changeFoodAmount("add", 10); I dunno if this is the right practice or not,
     // but whatever, I do what I want!
     mapgame.game.changeFoodAmount = function (addOrSubtract, amount, cost) {
+      if(cost) {
+        if(haveEnoughMoney(amount)) {
+          mapgame.game.player.money -= cost;
+        }
+        else {
+          message("Hey bub. You're broke.");
+          return;
+        }
+      }
       if (addOrSubtract) {
         // something tells me this logic is a bit convoluted
         if (addOrSubtract == "add" || addOrSubtract != "sub") {
@@ -244,13 +265,19 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
           mapgame.game.player.inventory.food++;
         }
       }
-      if(cost) {
-        mapgame.game.player.money -= cost;
-      }
       updateInfoPane();
     };
 
     mapgame.game.changeDrinkAmount = function (addOrSubtract, amount) {
+      if(cost) {
+        if(haveEnoughMoney(amount)) {
+          mapgame.game.player.money -= cost;
+        }
+        else {
+          message("Hey bub. You're broke.");
+          return;
+        }
+      }
       if (addOrSubtract) {
         // something tells me this logic is a bit convoluted
         if (addOrSubtract == "add" || addOrSubtract != "sub") {
@@ -277,9 +304,6 @@ mapgame.game = { player:{}, mechanics:{}, monsters:[], };
         else {
           mapgame.game.player.inventory.drink++;
         }
-      }
-      if (cost) {
-        mapgame.game.player.money -= cost;
       }
       updateInfoPane();
     };
