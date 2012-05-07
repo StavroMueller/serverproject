@@ -16,9 +16,10 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.game.lastMonster = null; // The last monster you interacted with
         mapgame.game.ui.initMainImage();
         mapgame.game.storyPoint = 0;
+        mapgame.game.monstersKilled = 0; // For leveling up?
         mapgame.game.player = new mapgame.game.Ship(20,10,10,1,5, 1);
 
-        mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,3,1,6, {
+        mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,7,1,6,null, {
                                                             hit: [ "The snake takes a bite",
                                                                    "The snake hisses. You get scared and fall over."
                                                                  ],
@@ -26,7 +27,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
                                                                    "The snake tries to bite, but slips, because snakes are slimy."
                                                                  ],
                                                             }));
-        mapgame.game.monsters.push(new mapgame.game.Monster("Incrediby adorable seahorse", 5, 2, 8, {
+        mapgame.game.monsters.push(new mapgame.game.Monster("Incrediby adorable seahorse", 10, 2, 8, null, {
                                                             hit: [ "It looks at you adorably. You think it deserves a chance, so you hit yourself.",
                                                                    "The something else does something else."
                                                                  ],
@@ -34,7 +35,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
                                                                    "Wooo another message about missing"
                                                                  ],
                                                             }));
-        mapgame.game.monsters.push(new mapgame.game.Monster("Giant Enemy Crab", 6, 3, 9, {
+        mapgame.game.monsters.push(new mapgame.game.Monster("Giant Enemy Crab", 15, 3, 9, null, {
                                                             hit: [ "The giant enemy crab snips off a part of your ear.",
                                                                    "The giant crab does something to hurt you."
                                                                  ],
@@ -62,11 +63,18 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function updateInfoPane() {
+      // This should turn red when low. But that's a moderate rewrite that I don't quite have time for right now.
       dojo.byId("infopane").innerHTML = "HP: " + mapgame.game.player.hp + "  " +
                                         "PP: " + mapgame.game.player.pp + "  " +
                                         "Food: " + mapgame.game.player.inventory.food + "  " +
                                         "Drink: " + mapgame.game.player.inventory.drink + "  " +
                                         "Money: " + mapgame.game.player.money;
+      if (mapgame.game.player.hp <= 10) {
+        dojo.byId("infopane").setAttribute("style", "background-color:red")
+      }
+      else {
+        dojo.byId("infopane").removeAttribute("style");
+      }
     }
 
     function haveEnoughMoney(amountToCheckFor) {
@@ -75,6 +83,12 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         return mapgame.game.player.money < amountToCheckFor ? false : true;
       }
       return mapgame.game.player.money <= 0 ? false : true;
+    }
+
+    function gameWin() {
+
+      // Stuff that happens when you win the game.
+
     }
 
     // This returns a bool to tell whether or not to enter combat on this turn.
@@ -92,6 +106,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         default:return true;
       }
     }
+
+    // All of these stupid functions could be better organised as arrays of objects, I think.
+    // Oh well, I'll do that later.
 
     function firstEncounter() {
 
@@ -134,6 +151,27 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       message("Righto. We'll be on our way.");
     }
 
+    function thirdEncounter() {
+      // This is where the morale goes down in october
+
+    }
+
+    function thirdResults() {
+    }
+
+    function fourthEncounter () {
+      // This is where land is sighted
+    }
+
+    function fourthResults() {
+    }
+
+    function fifthEncounter() {
+      // This is where port is called in 
+    }
+
+    function fifthResults() {
+    }
 
     function addButton(cssClass, value, onclick) {
       var buttonPlace = document.getElementById("buttonbox");
@@ -175,17 +213,21 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     mapgame.game.storeDone = function () {
+      var goOnButton = document.createElement("input");
+      goOnButton.setAttribute("type", "button");
+      goOnButton.setAttribute("value", "Onward!");
+      goOnButton.setAttribute("id", "goOnButton");
+      goOnButton.setAttribute("onclick", "mapgame.game.mechanics.moveForward()");
+
+      document.getElementById("informationContainer").appendChild(goOnButton);
+
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
       mapgame.game.currentPoint = 1;
     };
 
     function createBattlePage(monsterNumber) {
-      // Don't need these anymore - using a seperate div for the buttons. 
-      /*
-      messageBox = document.getElementById("messagebox");
-      mapgame.game.previousMessage = messageBox.innerHTML;
-      */
+      // Maybe calculate the distance here?
       updateInfoPane();
       mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearMessages();
@@ -194,16 +236,28 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
       addButton("battleButton", "Hit The " + mapgame.game.monsters[monsterNumber].desc + " Monster!", "mapgame.game.hitMonster(" + monsterNumber + ")");
 
-      addButton("battleButton", "Take a drink", "mapgame.game.takeDrink()");
+      addButton("battleButton", "Take a drink", "mapgame.game.takeDrink(" + monsterNumber + ")");
 
       addButton("battleButton", "Try to run away", "mapgame.game.runAway(" + monsterNumber + ")");
 
 
     }
 
-    mapgame.game.takeDrink = function () {
-      changeDrinkAmount("sub");
+    mapgame.game.takeDrink = function (monsterNumber) {
+      mapgame.game.ui.clearMessages();
+      message("You take a drink. Refreshing!");
+      mapgame.game.changeDrinkAmount("sub");
       mapgame.game.player.hp += 2 + mapgame.game.random(3);
+      var monsterDamage = monsterTurn(monsterNumber);
+        // damage the player here
+      if(monsterDamage) {
+       mapgame.game.player.damageMe(monsterDamage);
+       message( mapgame.game.monsters[monsterNumber].messages.hit[mapgame.game.random(mapgame.game.monsterMessages, true)]);
+      }
+      else {
+        message(mapgame.game.monsters[monsterNumber].messages.miss[mapgame.game.random(mapgame.game.monsterMessages, true)]);
+      }
+
       updateInfoPane();
     }
 
@@ -218,7 +272,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
       if (mapgame.game.random(10, false) <= mapgame.game.player.chanceToHit) { //Player hits
 
-        var playerDamage = mapgame.game.player.baseDamage + mapgame.game.random(2); //from 0 to 2
+        var playerDamage = mapgame.game.player.baseDamage + mapgame.game.random(5); //from 0 to 2
 
       }
       else {
@@ -250,6 +304,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
           // Damage the monster
           mapgame.game.monsters[monsterNumber].damageMe(playerDamage, monsterNumber);
           message("You hit the " + mapgame.game.monsters[monsterNumber].desc + " for " + playerDamage + " damage!");
+          if (playerDamage > 7) {
+            message("Whoa! Critical hit!");
+          }
         }
         else {
           message("You miss it.");
@@ -349,8 +406,8 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     mapgame.game.mechanics.moveForward = function() {
-      var combat = true;
       // This clears all of the graphics currently drawn on the map.
+      var combat = true;
       mapgame.game.ui.clearUI();
       mapgame.map.esriMap.graphics.clear();
       // Here will go the stuff that happens when the player wants to 
@@ -365,7 +422,13 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
 
       updateInfoPane();
-      combat = createStoryPointPage(mapgame.game.stopPoints[mapgame.game.currentPoint].id);
+      log(mapgame.game.stopPoints[mapgame.game.currentPoint].event);
+
+      if(mapgame.game.stopPoints[mapgame.game.currentPoint].event == "true") {
+        createStoryPointPage(mapgame.game.stopPoints[mapgame.game.currentPoint].id);
+        combat = false;
+      }
+      log(combat);
       if (combatHappens() && combat){
         mapgame.game.combatFlag = true;
         enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
@@ -417,22 +480,29 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function exitCombat() {
+      mapgame.game.monstersKilled++;
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearButtons();
       message("The open ocean", "titlebox");
       message("You defeat the " + mapgame.game.lastMonster + "! You gather the spoils.");
+      if (mapgame.game.monstersKilled == 2) {
+        message("You feel slightly stronger! You begin to flex, but 'ol sailor John winks at you. You stop.");
+        mapgame.game.player.baseDamage++;
+        mapgame.game.player.chanceToHit++;
+      }
       mapgame.game.player.money += mapgame.game.random(5);
       updateInfoPane();
     }
 
     // Why no id to use to identify the monster? At this point, the place in the main array is the unique identifier.
-    mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit, messages) {
+    mapgame.game.Monster = function (desc, hp, baseDamage, chanceToHit, distance, messages) {
       this.desc = desc;
       this.maxhp = hp;
       this.hp = hp;
       this.baseDamage = baseDamage;
       this.chanceToHit = chanceToHit;
+      this.distance = distance;
       this.messages = messages;
       this.damageMe = function(amount, id) {
 

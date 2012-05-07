@@ -14,6 +14,9 @@ var mapgame = {
   dojo.require("esri.map");
   dojo.require("esri.toolbars.draw");
   dojo.require("esri.tasks.query");
+  dojo.require("esri.tasks.geometry");
+
+  var geometryService = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); 
 
   mapgame.map.init = function () {
 
@@ -52,6 +55,24 @@ var mapgame = {
 
   };
 
+  // Both of the inputs are esri point objects
+  // This is used to calculate the chance to hit.
+  mapgame.map.calculateDistance = function (origin, target) {
+
+    var distParams =  new esri.tasks.DistanceParameters();
+    distParams.distanceUnit = esri.tasks.GeometryService.UNIT_STATUTE_MILE;
+
+    distParams.geometry1 = origin;
+    distParams.geometry2 = target;
+    // Don't really think this is required, plus it would take up PRECIOUS time.
+    // distParams.geodesic = true;
+    log("before call");
+    geometryService.distance(distParams, function(distance) {
+      log(distance);
+    });
+
+  }
+
   mapgame.map.centerMapOnPoint = function (pointNumber, factor) {
     var point = mapgame.game.stopPoints[pointNumber];
     if(!factor) {
@@ -77,6 +98,7 @@ var mapgame = {
       // new esri.symbol.SimpleMarkerSymbol()
       );
 
+    mapgame.map.shipPoint = new esri.geometry.Point(point.x, point.y, map.spatialReference);
     mapgame.map.esriMap.graphics.add(mapgame.map.shipGraphic);
     mapgame.map.centerMapOnPoint(mapgame.game.currentPoint);
 
@@ -117,6 +139,7 @@ var mapgame = {
       new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderMonster.png", 16, 16)
       );
 
+    mapgame.map.monsterPoint = new esri.geometry.Point(randomPoint.x, randomPoint.y, map.spatialReference);
     mapgame.map.esriMap.graphics.add(mapgame.map.monsterGraphic);
 
   }
