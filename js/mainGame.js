@@ -115,6 +115,21 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         case 9: fifthEncounter();
                 return false;
                 break;
+        case 13: sixthEncounter();
+                 return false;
+                 break;
+        case 15: seventhEncounter();
+                 return false;
+                 break;
+        case 17: eighthEncounter();
+                 return false;
+                 break;
+        case 26: ninthEncounter();
+                 return false;
+                 break;
+        case 28: tenthEncounter();
+                 return false;
+                 break;
         default:return true;
       }
     }
@@ -170,7 +185,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       message("You've been sailing for a while, and you start to doubt the ship is " +
               "going in the right direction. You aren't alone, too. The rest of the crew strikes " +
               "a deal with Captain Columbus: If land isn't sighted within the next three days, " +
-              "you will head back to spain.");
+              "you will head back to Spain.");
       addButton("storyButton", "Sounds Ominous!", "mapgame.game.buttonDispacher(3)");
       mapgame.game.goOnButton.disabled = true;
       // This is where the morale goes down in october
@@ -214,21 +229,50 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function sixthEncounter() {
       // Landing in cuba
+      mapgame.game.goOnButton.disabled = true;
+      message("You land in cuba blah blah");
+      addButton("storyButton", "Have fun", "mapgame.game.buttonDispacher(6)");
     }
 
     function sixthResults () {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
+      message("You go on blah blah blah");
     }
 
     function seventhEncounter() {
+      // losing the pinta
+      mapgame.game.goOnButton.disabled = true;
+      message("Along the way you think you lost the Pinta");
+      addButton("storyButton", "Ay dios mio", "mapgame.game.buttonDispacher(7)");
     }
 
     function seventhResults() {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false
+      message("You are sad or something");
     }
 
     function eighthEncounter() {
+      // meet up with pinta, happy have another ship
     }
 
     function eighthResults() {
+      // depart back to spain
+    }
+
+    function ninthEncounter() {
+      //make port in lisbon, argue with mayor
+    }
+
+    function ninthResults() {
+    }
+
+    function tenthEncounter() {
+      //back home, win the game
+    }
+
+    function tenthResults() {
     }
 
     function addButton(cssClass, value, onclick) {
