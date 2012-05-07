@@ -328,7 +328,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function createStorePage() {
       mapgame.game.ui.clearUI();
-      message("Hey, you should probably stock up before leaving.")
+      message("The store!", "titlebox");
+      message("Welcome to \"The Store\"! All we have right now is food and water, and the food doesn't do anything right now." +
+              " The water will heal you! You should probably spend all your money on that.");
 
       addButton("storeButton", "Buy you some jerky.(1 money)", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
 
@@ -607,6 +609,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.mechanics.moveForward = function() {
       // This clears all of the graphics currently drawn on the map.
+      message("The open ocean", "titlebox");
       drawSceneImage("atsea");
       var combat = true;
       mapgame.game.ui.clearUI();
@@ -699,7 +702,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       else {
         var moneyAmount = mapgame.game.random(5);
         mapgame.game.player.money += moneyAmount;
-        message("You defeat the " + mapgame.game.lastMonster + "! You find " + moneyAmount + "coins lying around on the corpse. I mean, " +
+        message("You defeat the " + mapgame.game.lastMonster + "! You find " + moneyAmount + " coins lying around on the corpse. I mean, " +
                 "not actually lying - it's called personification.");
         if (mapgame.game.monstersKilled == 2) {
           message("You feel slightly stronger! You begin to flex, but 'ol sailor John winks at you. You stop.");
@@ -797,6 +800,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
           mapgame.game.player.money -= cost;
         }
         else {
+          mapgame.game.clearMessages();
           message("Hey bub. You're broke.");
           return;
         }
