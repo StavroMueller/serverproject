@@ -70,7 +70,10 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
                                         "Drink: " + mapgame.game.player.inventory.drink + "  " +
                                         "Money: " + mapgame.game.player.money;
       if (mapgame.game.player.hp <= 10) {
-        dojo.byId("infopane").setAttribute("style", "background-color:red")
+        dojo.byId("infopane").setAttribute("style", "background-color:red");
+      }
+      else if (mapgame.game.player.hp <= 15) {
+        dojo.byId("infopane").setAttribute("style", "background-color:yellow");
       }
       else {
         dojo.byId("infopane").removeAttribute("style");
@@ -101,6 +104,15 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
                 return false;
                 break;
         case 3: secondEncounter();
+                return false;
+                break;
+        case 7: thirdEncounter();
+                return false;
+                break;
+        case 8: fourthEncounter();
+                return false;
+                break;
+        case 9: fifthEncounter();
                 return false;
                 break;
         default:return true;
@@ -144,33 +156,79 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     function secondEncounter() {
       message("Your first port of call is at the Canary islands!");
       addButton("storyButton", "Awesome.", "mapgame.game.buttonDispacher(2)");
+      // Also, this disabled mockery should be replaced with a nice toggle function.
+      mapgame.game.goOnButton.disabled = true;
     }
 
     function secondResults() {
       mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
       message("Righto. We'll be on our way.");
     }
 
     function thirdEncounter() {
+      message("You've been sailing for a while, and you start to doubt the ship is " +
+              "going in the right direction. You aren't alone, too. The rest of the crew strikes " +
+              "a deal with Captain Columbus: If land isn't sighted within the next three days, " +
+              "you will head back to spain.");
+      addButton("storyButton", "Sounds Ominous!", "mapgame.game.buttonDispacher(3)");
+      mapgame.game.goOnButton.disabled = true;
       // This is where the morale goes down in october
-
     }
 
     function thirdResults() {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
+      message("You continue on, secretly doubting your captain, and wanting to head home.");
     }
 
     function fourthEncounter () {
       // This is where land is sighted
+      message("Land ho! Rodrigo de Triana, on the Pinta, has sighted land! And just in time, too, almost two days " +
+              "after we started doubing that you'd ever find it!");
+      addButton("storyButton", "Woohoo!", "mapgame.game.buttonDispacher(4)");
+      mapgame.game.goOnButton.disabled = true;
     }
 
     function fourthResults() {
+      mapgame.game.ui.clearUI();
+      message("You can't wait to get your feet on land.");
+      mapgame.game.goOnButton.disabled = false;
     }
 
     function fifthEncounter() {
       // This is where port is called in 
+      message("You land, finally, on an island called Guanahani. That's what the natives call it, anyway. " +
+              "It's a pretty stupid name, and they're natives anyway - what do they know? Columbus decides " +
+              "to call this place San Salvador.");
+      addButton("storyButton", "Fair Enough", "mapgame.game.buttonDispacher(5)");
+      mapgame.game.goOnButton.disabled = true;
     }
 
     function fifthResults() {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
+      message("You have a generally good time with the natives, trading and conversing. Oh, and you don't " +
+              "know your way around here, so you kidnap a few, just to show you around.");
+    }
+
+    function sixthEncounter() {
+      // Landing in cuba
+    }
+
+    function sixthResults () {
+    }
+
+    function seventhEncounter() {
+    }
+
+    function seventhResults() {
+    }
+
+    function eighthEncounter() {
+    }
+
+    function eighthResults() {
     }
 
     function addButton(cssClass, value, onclick) {
@@ -212,15 +270,20 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/monsters/" + id + ".png");
     }
 
+    function addStoreButton() { 
+      mapgame.game.goOnButton = document.createElement("input");
+      mapgame.game.goOnButton.setAttribute("type", "button");
+      mapgame.game.goOnButton.setAttribute("value", "Onward!");
+      mapgame.game.goOnButton.setAttribute("id", "goOnButton");
+      mapgame.game.goOnButton.setAttribute("onclick", "mapgame.game.mechanics.moveForward()");
+      document.getElementById("informationContainer").appendChild(mapgame.game.goOnButton);
+    }
+
+    var makeStoreButton = _.once(addStoreButton);
+
     mapgame.game.storeDone = function () {
-      var goOnButton = document.createElement("input");
-      goOnButton.setAttribute("type", "button");
-      goOnButton.setAttribute("value", "Onward!");
-      goOnButton.setAttribute("id", "goOnButton");
-      goOnButton.setAttribute("onclick", "mapgame.game.mechanics.moveForward()");
 
-      document.getElementById("informationContainer").appendChild(goOnButton);
-
+      makeStoreButton();
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
       mapgame.game.currentPoint = 1;
@@ -289,6 +352,18 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         case 1: firstResults(bool);
                 break; 
         case 2: secondResults();
+                break;
+        case 3: thirdResults();
+                break;
+        case 4: fourthResults();
+                break;
+        case 5: fifthResults();
+                break;
+        case 6: sixthResults();
+                break;
+        case 7: seventhResults();
+                break;
+        case 8: eighthResults();
                 break;
         case "store": createStorePage();
                 break;
@@ -431,6 +506,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       log(combat);
       if (combatHappens() && combat){
         mapgame.game.combatFlag = true;
+        if(!debug) {
+          mapgame.game.goOnButton.disabled = true;
+        }
         enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
       }
       else {
@@ -480,6 +558,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function exitCombat() {
+      mapgame.game.goOnButton.disabled = false;
       mapgame.game.monstersKilled++;
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearTitle();
