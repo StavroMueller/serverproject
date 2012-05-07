@@ -19,6 +19,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.game.monstersKilled = 0; // For leveling up?
         mapgame.game.player = new mapgame.game.Ship(20,10,10,1,5, 1);
 
+        // See? Snake!
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,7,1,6,null, {
                                                             hit: [ "The snake takes a bite",
                                                                    "The snake hisses. You get scared and fall over."
@@ -59,7 +60,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function combatHappens() {
-      return mapgame.game.random(10) < 5 ? true : false;
+      return mapgame.game.random(10) < 6 ? true : false;
     }
 
     function updateInfoPane() {
@@ -157,7 +158,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         //get goin on the main game
         drawSceneImage(1);
         mapgame.game.ui.clearUI();
-        message(" \"Excellent! Here, have a feathered hat! We are leaving tommorow, but " + // WHOA SUSPENSE
+        message(" \"Excellent! Here, have a weird hat! We are leaving tommorow, but " + // WHOA SUSPENSE
 
                 "you should probably go get some shopping done while we're in port.\""); //phew
         message("Oh, and by the way, my name is Christopher Columbus.");
@@ -413,11 +414,11 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     mapgame.game.runAway = function(monsterNumber) {
 
       if (mapgame.game.player.chanceToHit < mapgame.game.random(10)) {
-        message("You run away successfully! Go you! Coward.");
         mapgame.game.combatFlag = false;
         exitCombat(true);
       }
       else {
+        mapgame.game.ui.clearMessages();
         message("You try to run away, but you don't make it.");
         var monsterDamage = monsterTurn(monsterNumber);
           // damage the player here
