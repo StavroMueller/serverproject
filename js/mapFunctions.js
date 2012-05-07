@@ -130,7 +130,7 @@ var mapgame = {
     query.text = id;
 
     query.outFields = 
-      ["FID"];
+      ["FID", "event"];
 
     var queryResult = queryTask.execute(query, queryCallback);
 
@@ -139,12 +139,14 @@ var mapgame = {
   function queryCallback(results) {
 
     // Let's get this query thing outta ArcGIS' hands as quickly as possible.
+    log(results);
     _.each(results.features, function (feature) {
 
       mapgame.game.stopPoints.push({
         id: feature.attributes.FID, // This is the id of each point - this is in order! 
         x: feature.geometry.x,
         y: feature.geometry.y,
+        event: feature.attributes.event,
       })
     })
 

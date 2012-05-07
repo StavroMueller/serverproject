@@ -131,7 +131,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function secondResults() {
       mapgame.game.ui.clearUI();
-      message("Righto. We'll be on out way.");
+      message("Righto. We'll be on our way.");
     }
 
 
