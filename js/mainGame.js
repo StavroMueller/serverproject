@@ -30,10 +30,10 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
                                                             }));
         mapgame.game.monsters.push(new mapgame.game.Monster("Incrediby adorable seahorse", 10, 2, 8, null, {
                                                             hit: [ "It looks at you adorably. You think it deserves a chance, so you hit yourself.",
-                                                                   "The something else does something else."
+                                                                   "You find a nearby sea saw and give it a whack."
                                                                  ],
                                                             miss:[ "It misses.",
-                                                                   "Wooo another message about missing"
+                                                                   "It rears back to attack, but then stops because it's a male and has to take care of babies. What a tool."
                                                                  ],
                                                             }));
         mapgame.game.monsters.push(new mapgame.game.Monster("Giant Enemy Crab", 15, 3, 9, null, {
@@ -585,16 +585,23 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       if(!element) {
         var element = "messagebox";
       }
-      var messageArea = document.getElementById(element);
-      if (!message) {
-        message = document.createTextNode('');
+      if (element == "titlebox") {
+        // for positioning reasons
+        document.getElementById(element).innerHTML = message;
+        return;
       }
+      else {
+        var messageArea = document.getElementById(element);
+        if (!message) {
+          message = document.createTextNode('');
+        }
 
-      var lineBreak = document.createElement("br");
-      var messageText = document.createTextNode(message);
+        var lineBreak = document.createElement("br");
+        var messageText = document.createTextNode(message);
 
-      messageArea.appendChild(lineBreak);
-      messageArea.appendChild(messageText);
+        messageArea.appendChild(lineBreak);
+        messageArea.appendChild(messageText);
+      }
 
     }
 
