@@ -50,7 +50,7 @@ p  {
 
 #bigimage {
 
-  height:200px;
+  height:300px;
 
 }
 /*
@@ -74,7 +74,15 @@ p  {
 
 }
 
+#titlebox {
+  padding: 5px;
+  height:40px;
+  width:100%;
+}
+
+
 #messageBox {
 
+  height:150px;
   margin: 10px;
 }

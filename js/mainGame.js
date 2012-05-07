@@ -19,6 +19,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.game.monstersKilled = 0; // For leveling up?
         mapgame.game.player = new mapgame.game.Ship(20,10,10,1,5, 1);
 
+        // See? Snake!
         mapgame.game.monsters.push(new mapgame.game.Monster("Terrifying sea snake" ,7,1,6,null, {
                                                             hit: [ "The snake takes a bite",
                                                                    "The snake hisses. You get scared and fall over."
@@ -59,7 +60,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function combatHappens() {
-      return mapgame.game.random(10) < 5 ? true : false;
+      return mapgame.game.random(10) < 6 ? true : false;
     }
 
     function updateInfoPane() {
@@ -140,6 +141,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     function firstEncounter() {
 
       //change the scene image here
+      drawSceneImage(0);
       message("An interesting occurance", "titlebox");
       message("Your name is Hernano Combino de Johnson Jr. You are walking along one day in Palos, Spain when " +
               "along comes a guy looking worried. You ask him, \"Hey bub, what's eating you?\"");
@@ -154,8 +156,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     function firstResults(accept) {
       if(accept) {
         //get goin on the main game
+        drawSceneImage(1);
         mapgame.game.ui.clearUI();
-        message(" \"Excellent! Here, have a feathered hat! We are leaving tommorow, but " + // WHOA SUSPENSE
+        message(" \"Excellent! Here, have a weird hat! We are leaving tommorow, but " + // WHOA SUSPENSE
 
                 "you should probably go get some shopping done while we're in port.\""); //phew
         message("Oh, and by the way, my name is Christopher Columbus.");
@@ -173,6 +176,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function secondEncounter() {
+      drawSceneImage(2);
       message("Phew, that was fun! Can we go back now?", "titlebox");
       message("Your first port of call is at the Canary islands!");
       addButton("storyButton", "Awesome.", "mapgame.game.buttonDispacher(2)");
@@ -187,6 +191,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function thirdEncounter() {
+      drawSceneImage(3);
       message("Gettin' lonely out here...", "titlebox");
       message("You've been sailing for a while, and you start to doubt the ship is " +
               "going in the right direction. You aren't alone, too. The rest of the crew strikes " +
@@ -205,6 +210,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function fourthEncounter () {
       // This is where land is sighted
+      drawSceneImage(4);
       message("Excuse me? Land what?", "titlebox");
       message("Land ho! Rodrigo de Triana, on the Pinta, has sighted land! And just in time, too, almost two days " +
               "after we started doubing that you'd ever find it!");
@@ -220,6 +226,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function fifthEncounter() {
       // This is where port is called in 
+      drawSceneImage(5);
       message("Portin' it up, yo.", "titlebox");
       message("You land, finally, on an island called Guanahani. That's what the natives call it, anyway. " +
               "It's a pretty stupid name, and they're natives anyway - what do they know? Columbus decides " +
@@ -237,6 +244,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function sixthEncounter() {
       // Landing in cuba
+      drawSceneImage(6);
       message("Cubatime!", "titlebox");
       mapgame.game.goOnButton.disabled = true;
       message("You land in Bariay Bay, Cuba. Here you spend weeks with Columbus, searching for a lost" +
@@ -248,13 +256,15 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       // Maybe add some stuff to inventory here.
       mapgame.game.ui.clearUI();
       mapgame.game.goOnButton.disabled = false;
-      message("You get going. Unfortunately, a day later, the Santa Maria grounds on a reef! Columbus, being the " +
+      var moneyAmount = random(20);
+      message("You get going, pocketing " + moneyAmount +"gold for yourself. Unfortunately, a day later, the Santa Maria grounds on a reef! Columbus, being the " +
               "resourceful explorer he is, builds a fort on the shore with the remains. Too bad for those guys, though - " +
               "your boat, the Nina, is too small to hold them all. You leave 40 people behind to await your return from Spain. Yeah. right.");
     }
 
     function seventhEncounter() {
       // losing the pinta
+      drawSceneImage(7);
       message("Hang on a sec...", "titlebox");
       mapgame.game.goOnButton.disabled = true;
       message("Whoa, hold the phone - er, letter - where in god's flat earth did the Pinta go? You could've sworn it was sailing right by you.");
@@ -269,6 +279,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function eighthEncounter() {
       // meet up with pinta, happy have another ship
+      drawSceneImage(8);
       message("There it is!", "titlebox");
       mapgame.game.goOnButton.disabled = true;
       message("Holy crap! There's the Pinta! Turns out Martin Alonzo Pinzon, the captain, decided to go explore on his own. That rebel! Seems like" +
@@ -286,6 +297,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function ninthEncounter() {
       //make port in lisbon, argue with mayor
+      drawSceneImage(9);
       message("Back on our side of the pond!");
       mapgame.game.goOnButton.disabled = true;
       message("Finally! You reach port in Lisbon, Portugal. ");
@@ -296,7 +308,8 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function tenthEncounter() {
       //back home, win the game
-    }
+      drawSceneImage(10);
+    } 
 
     function tenthResults() {
     }
@@ -327,7 +340,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     mapgame.game.ui.initMainImage = function() {
 
       mapgame.game.ui.mainImage = document.getElementById("bigimage");
-      mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage.png");
+      mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage2.png");
 
     };
 
@@ -364,6 +377,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function createBattlePage(monsterNumber) {
       // Maybe calculate the distance here?
+      drawMonsterImage(monsterNumber);
       updateInfoPane();
       mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearMessages();
@@ -398,6 +412,26 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     mapgame.game.runAway = function(monsterNumber) {
+
+      if (mapgame.game.player.chanceToHit < mapgame.game.random(10)) {
+        mapgame.game.combatFlag = false;
+        exitCombat(true);
+      }
+      else {
+        mapgame.game.ui.clearMessages();
+        message("You try to run away, but you don't make it.");
+        var monsterDamage = monsterTurn(monsterNumber);
+          // damage the player here
+        if(monsterDamage) {
+         mapgame.game.player.damageMe(monsterDamage);
+         message( mapgame.game.monsters[monsterNumber].messages.hit[mapgame.game.random(mapgame.game.monsterMessages, true)]);
+        }
+        else {
+          message(mapgame.game.monsters[monsterNumber].messages.miss[mapgame.game.random(mapgame.game.monsterMessages, true)]);
+        }
+
+        updateInfoPane();
+      }
 
       // This will determine a chace to run away
 
@@ -538,7 +572,6 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.ui.clearUI = function() {
       mapgame.game.ui.clearTitle();
-      mapgame.game.ui.clearInfoPane();
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearButtons();
     };
@@ -567,6 +600,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     mapgame.game.mechanics.moveForward = function() {
       // This clears all of the graphics currently drawn on the map.
+      drawSceneImage("atsea");
       var combat = true;
       mapgame.game.ui.clearUI();
       mapgame.map.esriMap.graphics.clear();
@@ -645,20 +679,33 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         mapgame.combatFlag = true;
     }
 
-    function exitCombat() {
+    function exitCombat(ranAway) {
       mapgame.game.goOnButton.disabled = false;
       mapgame.game.monstersKilled++;
       mapgame.game.ui.clearMessages();
       mapgame.game.ui.clearTitle();
       mapgame.game.ui.clearButtons();
       message("The open ocean", "titlebox");
-      message("You defeat the " + mapgame.game.lastMonster + "! You gather the spoils.");
-      if (mapgame.game.monstersKilled == 2) {
-        message("You feel slightly stronger! You begin to flex, but 'ol sailor John winks at you. You stop.");
-        mapgame.game.player.baseDamage++;
-        mapgame.game.player.chanceToHit++;
+      if (ranAway) {
+        message("You run away. Go you! Coward.");
       }
-      mapgame.game.player.money += mapgame.game.random(5);
+      else {
+        var moneyAmount = mapgame.game.random(5);
+        mapgame.game.player.money += moneyAmount;
+        message("You defeat the " + mapgame.game.lastMonster + "! You find " + moneyAmount + "coins lying around on the corpse. I mean, " +
+                "not actually lying - it's called personification.");
+        if (mapgame.game.monstersKilled == 2) {
+          message("You feel slightly stronger! You begin to flex, but 'ol sailor John winks at you. You stop.");
+          mapgame.game.player.baseDamage++;
+          mapgame.game.player.chanceToHit++;
+        }
+        if (mapgame.game.monstersKilled == 4) {
+          message("You get stronger still! All this killing is freakin' awesome.");
+          mapgame.game.player.baseDamage++;
+          mapgame.game.player.chanceToHit++;
+        }
+
+      }
       updateInfoPane();
     }
 
@@ -677,6 +724,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
         if(mapgame.game.monsters[id].hp <= 0) {
           mapgame.game.combatFlag = false;
+          mapgame.game.monsters[id].hp = mapgame.game.monsters[id].maxhp;
         }
       };
     }

@@ -94,7 +94,7 @@ var mapgame = {
 
     mapgame.map.shipGraphic = new esri.Graphic(
       new esri.geometry.Point(point.x, point.y, map.spatialReference),
-      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderShip.png", 16, 16) // This bugs me. The folder should be renamed to markerSymbols.
+      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/ship.png", 32, 32) // This bugs me. The folder should be renamed to markerSymbols.
       // new esri.symbol.SimpleMarkerSymbol()
       );
 
@@ -131,12 +131,12 @@ var mapgame = {
     var point = mapgame.game.stopPoints[mapgame.game.currentPoint];
 
 
-    var randomPoint = randomPointAbout(point, 100000);
+    var randomPoint = randomPointAbout(point, 50000);
 
 
     mapgame.map.monsterGraphic = new esri.Graphic(
       new esri.geometry.Point(randomPoint.x, randomPoint.y, map.spatialReference),
-      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/placeholderMonster.png", 16, 16)
+      new esri.symbol.PictureMarkerSymbol("static/images/markerIcons/monsters/" + monster + ".png", 32, 32)
       );
 
     mapgame.map.monsterPoint = new esri.geometry.Point(randomPoint.x, randomPoint.y, map.spatialReference);
@@ -146,7 +146,7 @@ var mapgame = {
 
   function queryStopPoint(id) {
     //var query = new esri.tasks.QueryTask;
-    var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/MapWithPoints/MapServer/0");
+    var queryTask = new esri.tasks.QueryTask("http://unseenuniversit/ArcGISServerInstance/rest/services/JustThePoints/MapServer/0");
     var query = new esri.tasks.Query();
 
     query.returnGeometry = true;
@@ -186,7 +186,7 @@ var mapgame = {
   }
 
   function addBasemap() {
-    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/MapWithPoints/MapServer";
+    var basemapUrl = "http://unseenuniversit/ArcGISServerInstance/rest/services/MapNoPoints/MapServer";
     var basemap = new esri.layers.ArcGISDynamicMapServiceLayer(basemapUrl);
 
     //basemap.layerInfos[0].defaultVisibility = false;
