@@ -141,7 +141,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
       //change the scene image here
       message("An interesting occurance", "titlebox");
-      message("Your name is Hernano Cordez de Leon Jr. You are walking along one day in Huelva, Spain when " +
+      message("Your name is Hernano Combino de Johnson Jr. You are walking along one day in Palos, Spain when " +
               "along comes a guy looking worried. You ask him, \"Hey bub, what's eating you?\"");
       message("\"I'm short one crew member! I need someone to take his spot! Will you?");
       message("Being of a nomadic nature, but mostly because you are low on money, you accept his offer and " +
@@ -164,11 +164,16 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         addButton("storyButton", "Let's go!", "mapgame.game.buttonDispacher(\"store\")");
       }
       else {
-        gameoverman("Really?");
+        gameoverman("Really? Okay, in that case: You tell Columbus no, and contiunue on to live a fairly mediocre " +
+                    "life with a wife and 2.4 kids. Your heritage spreads through the generations as people who are " +
+                    "known for being no-good lowlifes until one of your distant kin makes the ultimate mistake by clicking " +
+                    "the \"Deny\" button on an online mapping game and thus being relegated to the life of a complete loser." +
+                    " Ha! Bet you didn't see that one coming.");
       }
     }
 
     function secondEncounter() {
+      message("Phew, that was fun! Can we go back now?", "titlebox");
       message("Your first port of call is at the Canary islands!");
       addButton("storyButton", "Awesome.", "mapgame.game.buttonDispacher(2)");
       // Also, this disabled mockery should be replaced with a nice toggle function.
@@ -182,6 +187,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function thirdEncounter() {
+      message("Gettin' lonely out here...", "titlebox");
       message("You've been sailing for a while, and you start to doubt the ship is " +
               "going in the right direction. You aren't alone, too. The rest of the crew strikes " +
               "a deal with Captain Columbus: If land isn't sighted within the next three days, " +
@@ -199,6 +205,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function fourthEncounter () {
       // This is where land is sighted
+      message("Excuse me? Land what?", "titlebox");
       message("Land ho! Rodrigo de Triana, on the Pinta, has sighted land! And just in time, too, almost two days " +
               "after we started doubing that you'd ever find it!");
       addButton("storyButton", "Woohoo!", "mapgame.game.buttonDispacher(4)");
@@ -213,6 +220,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function fifthEncounter() {
       // This is where port is called in 
+      message("Portin' it up, yo.", "titlebox");
       message("You land, finally, on an island called Guanahani. That's what the natives call it, anyway. " +
               "It's a pretty stupid name, and they're natives anyway - what do they know? Columbus decides " +
               "to call this place San Salvador.");
@@ -229,40 +237,58 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     function sixthEncounter() {
       // Landing in cuba
+      message("Cubatime!", "titlebox");
       mapgame.game.goOnButton.disabled = true;
-      message("You land in cuba blah blah");
+      message("You land in Bariay Bay, Cuba. Here you spend weeks with Columbus, searching for a lost" +
+              " civilization mentioned by Marco Polo. Oh, and searching for gold. Really, just hope you find some gold.");
       addButton("storyButton", "Have fun", "mapgame.game.buttonDispacher(6)");
     }
 
     function sixthResults () {
+      // Maybe add some stuff to inventory here.
       mapgame.game.ui.clearUI();
       mapgame.game.goOnButton.disabled = false;
-      message("You go on blah blah blah");
+      message("You get going. Unfortunately, a day later, the Santa Maria grounds on a reef! Columbus, being the " +
+              "resourceful explorer he is, builds a fort on the shore with the remains. Too bad for those guys, though - " +
+              "your boat, the Nina, is too small to hold them all. You leave 40 people behind to await your return from Spain. Yeah. right.");
     }
 
     function seventhEncounter() {
       // losing the pinta
+      message("Hang on a sec...", "titlebox");
       mapgame.game.goOnButton.disabled = true;
-      message("Along the way you think you lost the Pinta");
+      message("Whoa, hold the phone - er, letter - where in god's flat earth did the Pinta go? You could've sworn it was sailing right by you.");
       addButton("storyButton", "Ay dios mio", "mapgame.game.buttonDispacher(7)");
     }
 
     function seventhResults() {
       mapgame.game.ui.clearUI();
       mapgame.game.goOnButton.disabled = false
-      message("You are sad or something");
+      message("You keep going, wondering what happened to the Pinta.");
     }
 
     function eighthEncounter() {
       // meet up with pinta, happy have another ship
+      message("There it is!", "titlebox");
+      mapgame.game.goOnButton.disabled = true;
+      message("Holy crap! There's the Pinta! Turns out Martin Alonzo Pinzon, the captain, decided to go explore on his own. That rebel! Seems like" +
+              " he wanted to explore the island \"Babeque\", where he had heard there was a lot of gold. What a rascal. " + 
+              "Columbus is mad, but not too much - now you have an extra ship to pick up those sailors left on the shore!");
+      addButton("storyButton", "Go get 'em", "mapgame.game.buttonDispacher(8)");
     }
 
     function eighthResults() {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
+      message("You pick up the sailors, and head on back to Spain, departing from Samana Bay.");
       // depart back to spain
     }
 
     function ninthEncounter() {
       //make port in lisbon, argue with mayor
+      message("Back on our side of the pond!");
+      mapgame.game.goOnButton.disabled = true;
+      message("Finally! You reach port in Lisbon, Portugal. ");
     }
 
     function ninthResults() {
@@ -290,7 +316,6 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     function createStorePage() {
       mapgame.game.ui.clearUI();
       message("Hey, you should probably stock up before leaving.")
-      buttonBox = document.getElementById("buttonbox");
 
       addButton("storeButton", "Buy you some jerky.(1 money)", "mapgame.game.changeFoodAmount(\"add\", 1, 1)");
 
@@ -305,6 +330,10 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/placeholderImage.png");
 
     };
+
+    function drawOceanImage() {
+
+    }
 
     function drawSceneImage(scene) {
       mapgame.game.ui.mainImage.setAttribute("src", "static/images/bigImages/scenes/" + scene + ".png");
@@ -391,6 +420,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
     // This is used for all the choice events - I can get away with just bool because there will always 
     // be just an accept / deny choice, I think. 
+    // We (er, I mean, I) can also take advantage of dynamic typing here, and pass in either a number
+    // or a string to tell where to go. Yeah, I know, I could just use an incredibly high number...but the 
+    // problem there is shut up.
     mapgame.game.buttonDispacher = function(buttonID, bool) {
       switch(buttonID) {
         case 1: firstResults(bool);
@@ -408,6 +440,10 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         case 7: seventhResults();
                 break;
         case 8: eighthResults();
+                break;
+        case 9: ninthResults();
+                break;
+        case 10:tenthResults();
                 break;
         case "store": createStorePage();
                 break;
@@ -464,6 +500,11 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     function gameoverman(gameOverMessage) {
       mapgame.map.esriMap.destroy();
       mapgame.game.ui.clearUI();
+      //set the background url of the map to something
+      if(mapgame.game.goOnButton) {
+        mapgame.game.goOnButton.disabled = true;
+        mapgame.game.goOnButton.setAttribute("value", "You can't go on, BECAUSE YOU'RE DEAD!");
+      }
       if(gameOverMessage) {
         message(gameOverMessage);// message message message
       }
@@ -554,6 +595,9 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
           mapgame.game.goOnButton.disabled = true;
         }
         enterCombat(mapgame.game.random(mapgame.game.monsters.length, true)); // The random determines the monster in the function
+      }
+      else if (!combat) {
+        // Do nothing! 
       }
       else {
         message("You move on down the line.");
@@ -672,12 +716,14 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
 
         if (mapgame.game.player.hp <= 0) {
           if (mapgame.game.random(10, false) <= 3) {
+            message("You feel an angellic presence");
             message("You suddenly feel better.");
             mapgame.game.player.hp = 5 + mapgame.game.random(2); // You were saved!
           }
           else
           {
             gameoverman("You were killed by " + mapgame.game.lastMonster + ".");
+            return;
           }
         }   
       };
