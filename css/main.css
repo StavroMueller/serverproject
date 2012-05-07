@@ -59,6 +59,8 @@ p  {
   height:100px;
 }
 */
+
+/* Button stuff adapted from http://webdesignerwall.com/tutorials/css3-gradient-buttons */
 .storyButton {
   display: inline-block;
   outline: none;
@@ -284,4 +286,9 @@ p  {
   width:460px;
   height:150px;
   margin: auto;
+}
+
+/*doesn't quite work yet*/
+input[disabled], textarea[disabled], button[disabled] {
+  color: black;
 }

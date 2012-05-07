@@ -90,6 +90,14 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
     }
 
     function gameWin() {
+      // mapgame.map.esriMap.crush();
+      // mapgame.map.esriMap.kill();
+      mapgame.map.esriMap.destroy(); 
+
+      mapgame.game.goOnButton.disabled = true;
+
+      message("You win! Go you! You look a little traumatized. You alright? You should sit down.");
+      message("OH GOD, SWEET VICTORY!", "titlebox");
 
       // Stuff that happens when you win the game.
 
@@ -256,7 +264,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       // Maybe add some stuff to inventory here.
       mapgame.game.ui.clearUI();
       mapgame.game.goOnButton.disabled = false;
-      var moneyAmount = random(20);
+      var moneyAmount = mapgame.game.random(20);
       message("You get going, pocketing " + moneyAmount +"gold for yourself. Unfortunately, a day later, the Santa Maria grounds on a reef! Columbus, being the " +
               "resourceful explorer he is, builds a fort on the shore with the remains. Too bad for those guys, though - " +
               "your boat, the Nina, is too small to hold them all. You leave 40 people behind to await your return from Spain. Yeah. right.");
@@ -301,14 +309,19 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       message("Back on our side of the pond!");
       mapgame.game.goOnButton.disabled = true;
       message("Finally! You reach port in Lisbon, Portugal. ");
+      addButton("storyButton", "Head on home", "mapgame.game.buttonDispacher(9)");
     }
 
     function ninthResults() {
+      mapgame.game.ui.clearUI();
+      mapgame.game.goOnButton.disabled = false;
+      message("You can't wait to get home and get back to your sad, sad life.");
     }
 
     function tenthEncounter() {
       //back home, win the game
       drawSceneImage(10);
+      gameWin();
     } 
 
     function tenthResults() {
@@ -702,7 +715,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       else {
         var moneyAmount = mapgame.game.random(5);
         mapgame.game.player.money += moneyAmount;
-        message("You defeat the " + mapgame.game.lastMonster + "! You find " + moneyAmount + " coins lying around on the corpse. I mean, " +
+        message("You defeat the " + mapgame.game.lastMonster + "! You find " + moneyAmount + "  coins lying around on the corpse. I mean, " +
                 "not actually lying - it's called personification.");
         if (mapgame.game.monstersKilled == 2) {
           message("You feel slightly stronger! You begin to flex, but 'ol sailor John winks at you. You stop.");
