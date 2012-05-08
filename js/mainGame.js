@@ -398,7 +398,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       message(mapgame.game.monsters[monsterNumber].desc, "titlebox");
       message("Uh oh! You've encountered a " + mapgame.game.monsters[monsterNumber].desc + "! Quick, hit it with something!");
 
-      addButton("battleButton", "Hit The " + mapgame.game.monsters[monsterNumber].desc + " Monster!", "mapgame.game.hitMonster(" + monsterNumber + ")");
+      addButton("battleButton", "Hit The " + mapgame.game.monsters[monsterNumber].desc, "mapgame.game.hitMonster(" + monsterNumber + ")");
 
       addButton("battleButton", "Take a drink", "mapgame.game.takeDrink(" + monsterNumber + ")");
 
