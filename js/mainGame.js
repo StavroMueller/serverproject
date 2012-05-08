@@ -97,7 +97,7 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       mapgame.game.goOnButton.disabled = true;
 
       message("You win! Go you! You look a little traumatized. You alright? You should sit down.");
-      message("OH GOD, SWEET VICTORY!", "titlebox");
+      message("SWEET VICTORY", "titlebox");
 
       // Stuff that happens when you win the game.
 
