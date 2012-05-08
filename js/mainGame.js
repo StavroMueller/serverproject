@@ -154,10 +154,8 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
       message("Your name is Hernano Combino de Johnson Jr. You are walking along one day in Palos, Spain when " +
               "along comes a guy looking worried. You ask him, \"Hey bub, what's eating you?\"");
       message("\"I'm short one crew member! I need someone to take his spot! Will you?");
-      message("Being of a nomadic nature, but mostly because you are low on money, you accept his offer and " +
-              "join his expedition.");
-      addButton("storyButton", "accept", "mapgame.game.buttonDispacher(1,true)");
-      addButton("storyButton", "deny", "mapgame.game.buttonDispacher(1,false)");
+      addButton("storyButton", "I'll do it!", "mapgame.game.buttonDispacher(1,true)");
+      addButton("storyButton", "Nah, I wanna carry on with my sad life.", "mapgame.game.buttonDispacher(1,false)");
 
     }
 
@@ -166,11 +164,12 @@ mapgame.game = { storyEvent:{}, player:{}, mechanics:{}, monsters:[], ui:{}, };
         //get goin on the main game
         drawSceneImage(1);
         mapgame.game.ui.clearUI();
-        message(" \"Excellent! Here, have a weird hat! We are leaving tommorow, but " + // WHOA SUSPENSE
-
-                "you should probably go get some shopping done while we're in port.\""); //phew
-        message("Oh, and by the way, my name is Christopher Columbus.");
-        message("You wonder why he is speaking in english. Also, why you are thinking in english. Oh well, " +
+        message("Being of a nomadic nature, but mostly because you are low on money, you accept his offer and " +
+              "join his expedition. Columbus says: "
+        + " \"Excellent! Here, have a weird hat! We are leaving tommorow, but " + // WHOA SUSPENSE
+                "you should probably go get some shopping done while we're in port.\"" //phew
+        + " Oh, and by the way, my name is Christopher Columbus."
+        + " You wonder why he is speaking in english. Also, why you are thinking in english. Oh well, " +
                 "time to get shopping!");
         addButton("storyButton", "Let's go!", "mapgame.game.buttonDispacher(\"store\")");
       }
