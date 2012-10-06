@@ -16,6 +16,7 @@ var mapgame = {
   dojo.require("esri.tasks.query");
   dojo.require("esri.tasks.geometry");
 
+  //GMAP: This should probably be an encoded polyline or something
   var geometryService = new esri.tasks.GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); 
 
   mapgame.map.init = function () {
